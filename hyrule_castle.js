@@ -200,7 +200,6 @@ function InFight(_player, _enemies, _boss) {
     var BossOrNot = false;
     /* ================ Boucle de jeu ================== */
     for (var i = 1; i <= 10; i += 1) {
-        console.log("nombre de boucle actuelLLLLLLLLLLLLLLLLLLE : ".concat(i));
         while (_enemies.hp > 1) {
             console.log("==================== FIGHT ".concat(nbFight, " ===================="));
             console.log("valeur de NewEnmy ".concat(NewEnemies));
@@ -217,11 +216,7 @@ function InFight(_player, _enemies, _boss) {
                     return true;
             }
             else if (res === 2) {
-                /*         console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
-                _player.hp += (OriPlayer.hp / 2);
-                if (_player.hp > OriPlayer.hp) {
-                  _player.hp = OriPlayer.hp;
-                } */ HealGame(OriPlayer, _player);
+                HealGame(OriPlayer, _player);
             }
             var checkIfPlayerIsGone = AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
             if (checkIfPlayerIsGone)

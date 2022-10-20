@@ -187,7 +187,6 @@ function InFight(_player: any, _enemies: any, _boss: any) {
   let BossOrNot = false;
   /* ================ Boucle de jeu ================== */
   for (let i = 1; i <= 10; i += 1) {
-    console.log(`nombre de boucle actuelLLLLLLLLLLLLLLLLLLE : ${i}`);
     while (_enemies.hp > 1) {
       console.log(`==================== FIGHT ${nbFight} ====================`);
       console.log(`valeur de NewEnmy ${NewEnemies}`);
@@ -200,11 +199,7 @@ function InFight(_player: any, _enemies: any, _boss: any) {
         const checkIfbossIsDie = AttackByPlayer(_player, _enemies, _boss, BossOrNot);
         if (checkIfbossIsDie) return true;
       } else if (res === 2) {
-        /*         console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
-        _player.hp += (OriPlayer.hp / 2);
-        if (_player.hp > OriPlayer.hp) {
-          _player.hp = OriPlayer.hp;
-        } */HealGame(OriPlayer, _player);
+        HealGame(OriPlayer, _player);
       }
       const checkIfPlayerIsGone = AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
       if (checkIfPlayerIsGone) return;
