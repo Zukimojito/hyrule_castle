@@ -82,14 +82,16 @@ function InFight(_player, _enemies, _boss) {
     }
 }
 function main() {
-    // Initialisation Player, Enemies, Bosses
+    // Initialisation Player
     var Player1 = (0, fct_init_game_1.InitPlayer)(player);
+    // Begin
+    var knowIfEndOrNotAndDifficulty = (0, basic_game_customization_1.initGameAndDifficulty)();
+    if (knowIfEndOrNotAndDifficulty === 'quit')
+        return;
+    // Initialisation Enemies, Bosses
     var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
     var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
-    // Begin
-    var knowIfEndOrNot = (0, basic_game_customization_1.DisplayBegin)(Player1);
-    if (knowIfEndOrNot)
-        return;
+    (0, basic_game_customization_1.DisplayBegin)(Player1);
     // In Fight
     InFight(Player1, Enemies1, Boss1);
 }
