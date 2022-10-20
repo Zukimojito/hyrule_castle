@@ -184,6 +184,13 @@ function AttackByEnnemy(BossOrNot, _player, _enemies, _boss) {
         }
     }
 }
+function HealGame(OriPlayer, _player) {
+    console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
+    _player.hp += (OriPlayer.hp / 2);
+    if (_player.hp > OriPlayer.hp) {
+        _player.hp = OriPlayer.hp;
+    }
+}
 function InFight(_player, _enemies, _boss) {
     var OriPlayer = __assign({}, _player);
     var OriEnemies = __assign({}, _enemies);
@@ -208,18 +215,14 @@ function InFight(_player, _enemies, _boss) {
                 var checkIfbossIsDie = AttackByPlayer(_player, _enemies, _boss, BossOrNot);
                 if (checkIfbossIsDie)
                     return true;
-                /*     _player.hp -= _enemies.str; */
-                /* if (_player.hp <= 0) { console.log(`${_player.name} died !`); return 1; } */
             }
             else if (res === 2) {
-                console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
+                /*         console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
                 _player.hp += (OriPlayer.hp / 2);
-                /* if (!BossOrNot) { _player.hp -= _enemies.str; } */
                 if (_player.hp > OriPlayer.hp) {
-                    _player.hp = OriPlayer.hp;
-                }
+                  _player.hp = OriPlayer.hp;
+                } */ HealGame(OriPlayer, _player);
             }
-            /*     if (!BossOrNot) {fct attack par ennemy; } else { fct attack byboss } */
             var checkIfPlayerIsGone = AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
             if (checkIfPlayerIsGone)
                 return;
