@@ -5,7 +5,7 @@ const readline = require('readline-sync');
 const fs = require('fs');
 
 /* const index = readline.keyInSelect([
-  'option 1',
+  'optiçon 1',
   'option 2',
   'option 3',
   'option 4',
@@ -48,19 +48,29 @@ interface Stat {
   hp: number,
   str: number
 }
+
 function AttackByEnnemy(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
-  initHpStrLink.hp -= initHpEnnemyEtBoss[i].str;
-  console.log(`${initHpEnnemyEtBoss[i].name} attaque.`);
-  console.log(`HP de Link après avoir subit l'attaque : ${initHpStrLink.hp}`);
+  if (initHpEnnemyEtBoss[i].hp > 1) {
+    initHpStrLink.hp -= initHpEnnemyEtBoss[i].str;
+    console.log(`${initHpEnnemyEtBoss[i].name} attaque.`);
+    if (initHpStrLink.hp > 0) {
+      console.log(`HP de Link après avoir subit l'attaque : ${initHpStrLink.hp}`);
+    } else {
+      console.log(`${initHpStrLink.name} est mort.`);
+    }
+  }
 }
 
-function AttackLink(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
+function AttackDeLink(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
   initHpEnnemyEtBoss[i].hp -= initHpStrLink.str;
-  console.log(`${initHpEnnemyEtBoss[i].name} HP: ${initHpEnnemyEtBoss[i].hp}`);
+  if (initHpEnnemyEtBoss[i].hp > 0) {
+    console.log(`${initHpEnnemyEtBoss[i].name} HP: ${initHpEnnemyEtBoss[i].hp}`);
+  } else {
+    console.log(`${initHpEnnemyEtBoss[i].name} est mort.`);
+  }
 }
 
 function Heal(Link: Stat) {
-  console.log(Link.hp);
   const hpEnCours = Link.hp;
   if (Link.hp < 60) {
     Link.hp = hpEnCours + 30;
@@ -79,12 +89,27 @@ function initHpLink() {
   return res[0];
 }
 
-/* function ShowHpEnnemy() {} */
-
 function initialisationStateEnnemyEtBoss() {
   const supaJson = fs.readFileSync('./BokoblinGanon.json', 'utf8');
   const res: Stat[] = JSON.parse(supaJson);
   return res;
+}
+
+function LinkIsDead(Link: Stat) {
+  if (Link.hp < 1) {
+    return true;
+  }
+}
+
+function ChoixDuJoueur(i: number, Ennemies: Stat[], Link: Stat) {
+  const res = readline.keyInYN('Tu veux attaquer ? Y = Attaque, N = Soin');
+  if (res === true) {
+    console.log('Tu attaques l\'ennemies');
+    AttackDeLink(i, Ennemies, Link);
+  } else {
+    console.log('Tu te soignes');
+    Heal(Link);
+  }
 }
 
 function main() {
@@ -92,31 +117,13 @@ function main() {
   const Ennemies: Stat[] = initialisationStateEnnemyEtBoss();
   const Link: Stat = initHpLink();
   for (let i = 9; i <= 9; i += 1) {
-    console.log(i);
     console.log(`==== FIGHT ${i + 1} ====`);
-    while (Ennemies[i].hp >= 0 && Link.hp >= 0) {
-      const res = readline.keyInYN('Tu veux attaquer ? Y = Attaque, N = Soin');
-      if (res === true) {
-        console.log('Tu attaques l\'ennemies');
-        AttackLink(i, Ennemies, Link);
-        if (Ennemies[i].hp < 1) {
-          console.log('Tu as vaincu ton ennemi ! Prochain combat !');
-        }
-        if (Link.hp < 1) {
-          console.log('Tu es décédé mon pauvre Link !');
-          return;
-        }
-        /*        if (Ennemies[i] === Ennemies.length - 1) {
-          console.log('Tu as vaincu Ganon !');
-          return;
-        } */
-      } else {
-        console.log('Tu te soignes');
-        Heal(Link);
+    while (Ennemies[i].hp > 1 && Link.hp > 1) {
+      if (LinkIsDead(Link)) {
+        return;
       }
-      if (Ennemies[i].hp > 1) {
-        AttackByEnnemy(i, Ennemies, Link);
-      }
+      ChoixDuJoueur(i, Ennemies, Link);
+      AttackByEnnemy(i, Ennemies, Link);
     }
   }
 }
