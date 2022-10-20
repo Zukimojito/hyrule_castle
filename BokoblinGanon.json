@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Bokoblin 1",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 2,
+        "name": "Bokoblin 2",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 3,
+        "name": "Bokoblin 3",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 4,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 5,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 6,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 7,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 8,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 9,
+        "name": "Bokoblin",
+        "hp": 30,
+        "str": 5
+    },
+    {
+        "id": 10,
+        "name": "Ganon",
+        "hp": 150,
+        "str": 20
+    }
+]
