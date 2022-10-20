@@ -1,46 +1,9 @@
-import { link } from 'fs/promises';
-
-/* eslint-disable no-plusplus */
 const readline = require('readline-sync');
 const fs = require('fs');
 
-/* const index = readline.keyInSelect([
-  'optiçon 1',
-  'option 2',
-  'option 3',
-  'option 4',
-  'option 5',
-  'option 6',
-  'option 7',
-  'option 8',
-  'option 9',
-  'option 10',
-  'option 11',
-  'option 12',
-  'option 13',
-  'option 14',
-  'option 15',
-  'option 16',
-  'option 17',
-  'option 18',
-  'option 19',
-  'option 20',
-  'option 21',
-  'option 22',
-  'option 23',
-  'option 24',
-  'option 25',
-  'option 26',
-  'option 27',
-  'option 28',
-  'option 29',
-  'option 30',
-  'option 31',
-  'option 32',
-  'option 33',
-  'option 34',
-  'option 35',
-]); */
+const commandeDeChoix = [
+  'Attaque', 'Soin',
+];
 
 interface Stat {
   id: number,
@@ -49,7 +12,7 @@ interface Stat {
   str: number
 }
 
-function AttackByEnnemy(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
+function attackByEnnemy(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
   if (initHpEnnemyEtBoss[i].hp > 1) {
     initHpStrLink.hp -= initHpEnnemyEtBoss[i].str;
     console.log(`${initHpEnnemyEtBoss[i].name} attaque.`);
@@ -61,21 +24,21 @@ function AttackByEnnemy(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: St
   }
 }
 
-function AttackDeLink(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
+function attackDeLink(i: number, initHpEnnemyEtBoss: Stat[], initHpStrLink: Stat) {
   initHpEnnemyEtBoss[i].hp -= initHpStrLink.str;
-  if (initHpEnnemyEtBoss[i].hp > 0) {
-    console.log(`${initHpEnnemyEtBoss[i].name} HP: ${initHpEnnemyEtBoss[i].hp}`);
-  } else {
-    console.log(`${initHpEnnemyEtBoss[i].name} est mort.`);
+  if (initHpEnnemyEtBoss[i].hp <= 0) {
+    if (initHpEnnemyEtBoss[i].id !== initHpEnnemyEtBoss.length) {
+      console.log(`${initHpEnnemyEtBoss[i].name} est mort.`);
+    } else { console.log(`${initHpEnnemyEtBoss[i].name} est mort.\n Vous avez gagné ! \n Fin du jeu.`); }
   }
 }
 
-function Heal(Link: Stat) {
+function heal(Link: Stat, LinkStatOriginal: Stat) {
   const hpEnCours = Link.hp;
-  if (Link.hp < 60) {
-    Link.hp = hpEnCours + 30;
-    if (Link.hp > 60) {
-      Link.hp = 60;
+  if (Link.hp < LinkStatOriginal.hp) {
+    Link.hp = hpEnCours + (LinkStatOriginal.hp / 2);
+    if (Link.hp > LinkStatOriginal.hp) {
+      Link.hp = LinkStatOriginal.hp;
     }
   } else {
     console.log('Vie au Maximum');
@@ -89,41 +52,52 @@ function initHpLink() {
   return res[0];
 }
 
+/* function ShowHpEnnemy() {} */
+
 function initialisationStateEnnemyEtBoss() {
   const supaJson = fs.readFileSync('./BokoblinGanon.json', 'utf8');
   const res: Stat[] = JSON.parse(supaJson);
   return res;
 }
 
-function LinkIsDead(Link: Stat) {
+function linkIsDead(Link: Stat) {
   if (Link.hp < 1) {
     return true;
   }
 }
 
-function ChoixDuJoueur(i: number, Ennemies: Stat[], Link: Stat) {
-  const res = readline.keyInYN('Tu veux attaquer ? Y = Attaque, N = Soin');
-  if (res === true) {
-    console.log('Tu attaques l\'ennemies');
-    AttackDeLink(i, Ennemies, Link);
-  } else {
+function choixDuJoueur(i: number, Ennemies: Stat[], Link: Stat, LinkStatOriginal: Stat) {
+  const res = readline.keyInSelect(commandeDeChoix, 'Selectionner une action :');
+  if (commandeDeChoix[res] === 'Attaque') {
+    console.log(`Tu attaques ${Ennemies[i].name}`);
+    attackDeLink(i, Ennemies, Link);
+  } else if (commandeDeChoix[res] === 'Soin') {
     console.log('Tu te soignes');
-    Heal(Link);
+    heal(Link, LinkStatOriginal);
   }
+}
+
+function afficherGlobal(i: number, Ennemies: Stat[], Link: Stat) {
+  console.log(`================ Vos stats Etage ${i + 1} ====================`);
+  console.log(`Link : ${Link.hp}hp`);
+  console.log(`================ Stat Ennemie Etage ${i + 1} =================`);
+  console.log(`${Ennemies[i].name} : ${Ennemies[i].hp}hp`);
+  console.log('===============================================');
 }
 
 function main() {
   /* console.log('you chose ' + index); */
   const Ennemies: Stat[] = initialisationStateEnnemyEtBoss();
   const Link: Stat = initHpLink();
-  for (let i = 9; i <= 9; i += 1) {
-    console.log(`==== FIGHT ${i + 1} ====`);
+  const LinkStatOriginal: Stat = initHpLink();
+  for (let i = 0; i <= ((Ennemies.length - 1)); i += 1) {
     while (Ennemies[i].hp > 1 && Link.hp > 1) {
-      if (LinkIsDead(Link)) {
+      afficherGlobal(i, Ennemies, Link);
+      if (linkIsDead(Link)) {
         return;
       }
-      ChoixDuJoueur(i, Ennemies, Link);
-      AttackByEnnemy(i, Ennemies, Link);
+      choixDuJoueur(i, Ennemies, Link, LinkStatOriginal);
+      attackByEnnemy(i, Ennemies, Link);
     }
   }
 }
