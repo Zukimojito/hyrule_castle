@@ -95,6 +95,15 @@ function InitBoss(_boss: any) {
   });
   return CopyBoss;
 }
+
+function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
+  if (_enemies.hp <= 0) {
+    NewEnemies = true;
+    _enemies.hp = OriEnemies.hp;
+    console.log(`${_enemies.name} died !`);
+  }
+}
+
 function DisplayBegin(_player: any) {
   const OriPlayer = _player;
   console.log('========================================');
@@ -125,65 +134,67 @@ function InFight(_player: any, _enemies: any, _boss: any) {
   const OriBoss = { ..._boss };
   let nbFight = 1;
   let NewEnemies = true;
-  let nbEnemies = 1;
+  /* let nbEnemies = 1; */
   let BossOrNot = false;
-
-  while (_boss.hp > 1) {
-    console.log(`==================== FIGHT ${nbFight} ====================`);
-    if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
-    if (nbEnemies <= 9) {
-      console.log('\n');
-      console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${nbEnemies})`);
-      console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
-    } else {
-      console.log('\n');
-      console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
-      console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
-      BossOrNot = true;
-    }
-    console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
-    console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
-    const res = OptionInGame();
-
-    if (res === 1) {
-      console.log('==================== INFOS ====================');
-      console.log(`You attacked and dealt ${_player.str} damages !`);
-      if (!BossOrNot) {
-        console.log(`${_enemies.name} attacked and deal ${_enemies.str} damages !`);
-        _enemies.hp -= _player.str;
+  for (let i = 1; i <= 10; i += 1) {
+    console.log(`nombre de boucle actuelLLLLLLLLLLLLLLLLLLE : ${i}`);
+    while (_enemies.hp > 1) {
+      console.log(`==================== FIGHT ${nbFight} ====================`);
+      if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
+      if (i <= 9) {
+        console.log('\n');
+        console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
+        console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
       } else {
-        console.log(`${_boss.name} attacked and deal ${_boss.str} damages !`);
-        _boss.hp -= _player.str;
+        console.log('\n');
+        console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
+        console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
+        BossOrNot = true;
       }
-      console.log('\n');
+      console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
+      console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
+      const res = OptionInGame();
 
-      _player.hp -= _enemies.str;
+      if (res === 1) {
+        console.log('==================== INFOS ====================');
+        console.log(`You attacked and dealt ${_player.str} damages !`);
+        if (!BossOrNot) {
+          console.log(`${_enemies.name} attacked and deal ${_enemies.str} damages !`);
+          _enemies.hp -= _player.str;
+        } else {
+          console.log(`${_boss.name} attacked and deal ${_boss.str} damages !`);
+          _boss.hp -= _player.str;
+        }
+        console.log('\n');
 
-      if (_enemies.hp <= 0) {
-        nbEnemies += 1;
-        NewEnemies = true;
-        _enemies.hp = OriEnemies.hp;
-        console.log(`${_enemies.name} died !`);
+        _player.hp -= _enemies.str;
+
+        if (_boss.hp <= 0) { console.log(`${_boss.name} died !`); return 1; }
+        if (_player.hp <= 0) { console.log(`${_player.name} died !`); return 1; }
+      } else if (res === 2) {
+        console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
+        _player.hp += (OriPlayer.hp / 2);
+        if (!BossOrNot) { _player.hp -= _enemies.str; }
+        if (_player.hp > OriPlayer.hp) {
+          _player.hp = OriPlayer.hp;
+        }
       }
-      if (_boss.hp <= 0) { console.log(`${_boss.name} died !`); return 1; }
-      if (_player.hp <= 0) { console.log(`${_player.name} died !`); return 1; }
-    } else if (res === 2) {
-      console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
-      _player.hp += (OriPlayer.hp / 2);
-      if (!BossOrNot) { _player.hp -= _enemies.str; }
-      if (_player.hp > OriPlayer.hp) {
-        _player.hp = OriPlayer.hp;
-      }
+      nbFight += 1;
     }
-    nbFight += 1;
+    /*     if (_enemies.hp <= 0) {
+      NewEnemies = true;
+      _enemies.hp = OriEnemies.hp;
+      console.log(`${_enemies.name} died !`);
+    } */
+    ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
   }
 }
 
 function main() {
   // Initialisation Player, Enemies, Bosses
-  const Player1 = InitPlayer(player);
-  const Enemies1 = InitEnemies(enemies);
-  const Boss1 = InitBoss(bosses);
+  const Player1: Stats = InitPlayer(player);
+  const Enemies1: Stats = InitEnemies(enemies);
+  const Boss1: Stats = InitBoss(bosses);
   // Begin
   DisplayBegin(Player1);
   // In Fight

@@ -102,6 +102,13 @@ function InitBoss(_boss) {
     });
     return CopyBoss;
 }
+function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
+    if (_enemies.hp <= 0) {
+        NewEnemies = true;
+        _enemies.hp = OriEnemies.hp;
+        console.log("".concat(_enemies.name, " died !"));
+    }
+}
 function DisplayBegin(_player) {
     var OriPlayer = _player;
     console.log('========================================');
@@ -132,67 +139,70 @@ function InFight(_player, _enemies, _boss) {
     var OriBoss = __assign({}, _boss);
     var nbFight = 1;
     var NewEnemies = true;
-    var nbEnemies = 1;
+    /* let nbEnemies = 1; */
     var BossOrNot = false;
-    while (_boss.hp > 1) {
-        console.log("==================== FIGHT ".concat(nbFight, " ===================="));
-        if (NewEnemies) {
-            DisplayFight(_enemies);
-            NewEnemies = false;
-        }
-        if (nbEnemies <= 9) {
-            console.log('\n');
-            console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(nbEnemies, ")"));
-            console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
-        }
-        else {
-            console.log('\n');
-            console.log('\x1b[31m%s\x1b[0m', "".concat(_boss.name, " (Boss)"));
-            console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
-            BossOrNot = true;
-        }
-        console.log('\x1b[32m%s\x1b[0m', "".concat(_player.name, " (player)"));
-        console.log("HP: ".concat(_player.hp, " / ").concat(OriPlayer.hp));
-        var res = OptionInGame();
-        if (res === 1) {
-            console.log('==================== INFOS ====================');
-            console.log("You attacked and dealt ".concat(_player.str, " damages !"));
-            if (!BossOrNot) {
-                console.log("".concat(_enemies.name, " attacked and deal ").concat(_enemies.str, " damages !"));
-                _enemies.hp -= _player.str;
+    for (var i = 1; i <= 10; i += 1) {
+        console.log("nombre de boucle actuel : ".concat(i));
+        while (_enemies.hp > 1) {
+            console.log("==================== FIGHT ".concat(nbFight, " ===================="));
+            if (NewEnemies) {
+                DisplayFight(_enemies);
+                NewEnemies = false;
+            }
+            if (i <= 9) {
+                console.log('\n');
+                console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(i, ")"));
+                console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
             }
             else {
-                console.log("".concat(_boss.name, " attacked and deal ").concat(_boss.str, " damages !"));
-                _boss.hp -= _player.str;
+                console.log('\n');
+                console.log('\x1b[31m%s\x1b[0m', "".concat(_boss.name, " (Boss)"));
+                console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
+                BossOrNot = true;
             }
-            console.log('\n');
-            _player.hp -= _enemies.str;
-            if (_enemies.hp <= 0) {
-                nbEnemies += 1;
-                NewEnemies = true;
-                _enemies.hp = OriEnemies.hp;
-                console.log("".concat(_enemies.name, " died !"));
-            }
-            if (_boss.hp <= 0) {
-                console.log("".concat(_boss.name, " died !"));
-                return 1;
-            }
-            if (_player.hp <= 0) {
-                console.log("".concat(_player.name, " died !"));
-                return 1;
-            }
-        }
-        else if (res === 2) {
-            console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
-            _player.hp += (OriPlayer.hp / 2);
-            if (!BossOrNot) {
+            console.log('\x1b[32m%s\x1b[0m', "".concat(_player.name, " (player)"));
+            console.log("HP: ".concat(_player.hp, " / ").concat(OriPlayer.hp));
+            var res = OptionInGame();
+            if (res === 1) {
+                console.log('==================== INFOS ====================');
+                console.log("You attacked and dealt ".concat(_player.str, " damages !"));
+                if (!BossOrNot) {
+                    console.log("".concat(_enemies.name, " attacked and deal ").concat(_enemies.str, " damages !"));
+                    _enemies.hp -= _player.str;
+                }
+                else {
+                    console.log("".concat(_boss.name, " attacked and deal ").concat(_boss.str, " damages !"));
+                    _boss.hp -= _player.str;
+                }
+                console.log('\n');
                 _player.hp -= _enemies.str;
+                if (_boss.hp <= 0) {
+                    console.log("".concat(_boss.name, " died !"));
+                    return 1;
+                }
+                if (_player.hp <= 0) {
+                    console.log("".concat(_player.name, " died !"));
+                    return 1;
+                }
             }
-            if (_player.hp > OriPlayer.hp) {
-                _player.hp = OriPlayer.hp;
+            else if (res === 2) {
+                console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
+                _player.hp += (OriPlayer.hp / 2);
+                if (!BossOrNot) {
+                    _player.hp -= _enemies.str;
+                }
+                if (_player.hp > OriPlayer.hp) {
+                    _player.hp = OriPlayer.hp;
+                }
             }
+            nbFight += 1;
         }
-        nbFight += 1;
+        /*     if (_enemies.hp <= 0) {
+          NewEnemies = true;
+          _enemies.hp = OriEnemies.hp;
+          console.log(`${_enemies.name} died !`);
+        } */
+        ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
     }
 }
 function main() {
