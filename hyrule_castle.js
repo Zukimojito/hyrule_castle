@@ -171,9 +171,17 @@ function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
 function AttackByEnnemy(BossOrNot, _player, _enemies, _boss) {
     if (!BossOrNot) {
         _player.hp -= _enemies.str;
+        if (_player.hp <= 0) {
+            console.log("".concat(_player.name, " died !"));
+            return true;
+        }
     }
     else {
         _player.hp -= _boss.str;
+        if (_player.hp <= 0) {
+            console.log("".concat(_player.name, " died !"));
+            return true;
+        }
     }
 }
 function InFight(_player, _enemies, _boss) {
@@ -201,10 +209,7 @@ function InFight(_player, _enemies, _boss) {
                 if (checkIfbossIsDie)
                     return true;
                 /*     _player.hp -= _enemies.str; */
-                if (_player.hp <= 0) {
-                    console.log("".concat(_player.name, " died !"));
-                    return 1;
-                }
+                /* if (_player.hp <= 0) { console.log(`${_player.name} died !`); return 1; } */
             }
             else if (res === 2) {
                 console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
@@ -215,7 +220,9 @@ function InFight(_player, _enemies, _boss) {
                 }
             }
             /*     if (!BossOrNot) {fct attack par ennemy; } else { fct attack byboss } */
-            AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
+            var checkIfPlayerIsGone = AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
+            if (checkIfPlayerIsGone)
+                return;
             nbFight += 1;
         }
         NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
