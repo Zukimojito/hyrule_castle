@@ -1,4 +1,4 @@
-import { Stats } from './i_game';
+import { Stats } from '../interface_game/i_game';
 
 export function AttackByPlayer(_player: Stats, _enemies: Stats, _boss: Stats, BossOrNot: any) {
   console.log('==================== INFOS ====================');

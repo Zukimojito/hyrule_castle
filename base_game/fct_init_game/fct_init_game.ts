@@ -1,4 +1,4 @@
-import { Stats } from './i_game';
+import { Stats } from '../interface_game/i_game';
 
 function getRandomInt() {
   // Returns a random integer from 0 to 100:

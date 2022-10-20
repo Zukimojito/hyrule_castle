@@ -13,14 +13,14 @@ var __assign = (this && this.__assign) || function () {
 exports.__esModule = true;
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
-var fct_init_game_1 = require("./fct_init_game");
-var fct_show_game_1 = require("./fct_show_game");
-var fct_attack_game_1 = require("./fct_attack_game");
+var fct_init_game_1 = require("./fct_init_game/fct_init_game");
+var fct_show_game_1 = require("./fct_show_game/fct_show_game");
+var fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
 /* const readline = require('readline-sync'); */
 // Original
-var player = require('./players.json');
-var enemies = require('./enemies.json');
-var bosses = require('./bosses.json');
+var player = require('./jsonObjectGame/players.json');
+var enemies = require('./jsonObjectGame/enemies.json');
+var bosses = require('./jsonObjectGame/bosses.json');
 function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;

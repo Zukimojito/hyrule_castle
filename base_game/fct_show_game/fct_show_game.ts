@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable max-len */
-import { Stats } from './i_game';
+import { Stats } from '../interface_game/i_game';
 
 export const readline = require('readline-sync');
 

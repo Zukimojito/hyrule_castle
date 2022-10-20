@@ -2,23 +2,23 @@
 /* eslint-disable max-len */
 import {
   InitPlayer, InitEnemies, InitBoss,
-} from './fct_init_game';
+} from './fct_init_game/fct_init_game';
 
 import {
   readline, ShowStatAndEnnemy, ShowStatPlayer, DisplayBegin, DisplayFight,
-} from './fct_show_game';
+} from './fct_show_game/fct_show_game';
 
 import {
   AttackByPlayer, AttackByEnnemy,
-} from './fct_attack_game';
+} from './fct_attack_game/fct_attack_game';
 
-import { Stats } from './i_game';
+import { Stats } from './interface_game/i_game';
 
 /* const readline = require('readline-sync'); */
 // Original
-const player = require('./players.json');
-const enemies = require('./enemies.json');
-const bosses = require('./bosses.json');
+const player = require('./jsonObjectGame/players.json');
+const enemies = require('./jsonObjectGame/enemies.json');
+const bosses = require('./jsonObjectGame/bosses.json');
 
 function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any, OriEnemies: Stats) {
   if (_enemies.hp <= 0) {
