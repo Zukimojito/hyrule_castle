@@ -101,6 +101,7 @@ function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
     NewEnemies = true;
     _enemies.hp = OriEnemies.hp;
     console.log(`${_enemies.name} died !`);
+    return NewEnemies;
   }
 }
 
@@ -140,6 +141,7 @@ function InFight(_player: any, _enemies: any, _boss: any) {
     console.log(`nombre de boucle actuelLLLLLLLLLLLLLLLLLLE : ${i}`);
     while (_enemies.hp > 1) {
       console.log(`==================== FIGHT ${nbFight} ====================`);
+      console.log(`valeur de NewEnmy ${NewEnemies}`);
       if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
       if (i <= 9) {
         console.log('\n');
@@ -186,7 +188,7 @@ function InFight(_player: any, _enemies: any, _boss: any) {
       _enemies.hp = OriEnemies.hp;
       console.log(`${_enemies.name} died !`);
     } */
-    ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+    NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
   }
 }
 
