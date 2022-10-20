@@ -1,32 +1,33 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
-import readline from 'readline-sync';
+const readline = require('readline-sync');
 // Original
-import player from './players.json';
-import enemies from './enemies.json';
-import bosses from './bosses.json';
+const player = require('./players.json');
+const enemies = require('./enemies.json');
+const bosses = require('./bosses.json');
 
 interface Stats {
   id: number;
   name: string;
   hp: number;
   str: number;
+  rarity: number;
 }
 function getRandomInt() {
   // Returns a random integer from 0 to 100:
   const random = Math.floor(Math.random() * 100) + 1;
-  const arrayPlayerEnemiesBoss: string[] = [];
+  let arrayPlayerEnemiesBoss: number = 0;
   // console.log(random);
   if (random > 0 && random <= 50) {
-    arrayPlayerEnemiesBoss.push('Link', 'Skulltula', 'Ganon');
+    arrayPlayerEnemiesBoss = 1;
   } else if (random > 50 && random <= 80) {
-    arrayPlayerEnemiesBoss.push('Young Link', 'Lizalfos', 'Volvagia');
+    arrayPlayerEnemiesBoss = 2;
   } else if (random > 80 && random <= 95) {
-    arrayPlayerEnemiesBoss.push('Sheik', 'Dead Hand', 'Onox');
+    arrayPlayerEnemiesBoss = 3;
   } else if (random > 95 && random <= 99) {
-    arrayPlayerEnemiesBoss.push('Impa', 'Stalfos', 'Stallord');
+    arrayPlayerEnemiesBoss = 4;
   } else if (random === 100) {
-    arrayPlayerEnemiesBoss.push('Hylia', 'Guardian', 'Gohma');
+    arrayPlayerEnemiesBoss = 5;
   }
   return arrayPlayerEnemiesBoss;
 }
@@ -37,14 +38,16 @@ function InitPlayer(_player: any) {
     name: '',
     hp: 0,
     str: 0,
+    rarity: 0,
   };
   _player.forEach((el: Stats) => {
-    if (el.name === Rdinit[0]) {
+    if (el.rarity === Rdinit) {
       CopyPlayer = {
         id: el.id,
         name: el.name,
         hp: el.hp,
         str: el.str,
+        rarity: el.rarity,
       };
     }
   });
@@ -56,14 +59,16 @@ function InitEnemies(_enemies: any) {
     name: '',
     hp: 0,
     str: 0,
+    rarity: 0,
   };
   _enemies.forEach((el: Stats) => {
-    if (el.name === Rdinit[1]) {
+    if (el.rarity === Rdinit) {
       CopyEnemies = {
         id: el.id,
         name: el.name,
         hp: el.hp,
         str: el.str,
+        rarity: el.rarity,
       };
     }
   });
@@ -75,14 +80,16 @@ function InitBoss(_boss: any) {
     name: '',
     hp: 0,
     str: 0,
+    rarity: 0,
   };
   _boss.forEach((el: Stats) => {
-    if (el.name === Rdinit[2]) {
+    if (el.rarity === Rdinit) {
       CopyBoss = {
         id: el.id,
         name: el.name,
         hp: el.hp,
         str: el.str,
+        rarity: el.rarity,
       };
     }
   });
@@ -100,7 +107,7 @@ function DisplayBegin(_player: any) {
   readline.keyIn('Press Any Key to Start the game : ');
   console.log('\n');
 }
-function Option() {
+function OptionInGame() {
   let res;
   console.log('-------------------- OPTION --------------------');
   console.log('            1. Attack      2. Heal              ');
@@ -136,7 +143,7 @@ function InFight(_player: any, _enemies: any, _boss: any) {
     }
     console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
     console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
-    const res = Option();
+    const res = OptionInGame();
 
     if (res === 1) {
       console.log('==================== INFOS ====================');
