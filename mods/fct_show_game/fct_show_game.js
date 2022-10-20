@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.DisplayFight = exports.DisplayBegin = exports.ShowStatPlayer = exports.ShowStatAndEnnemy = exports.readline = void 0;
+exports.DisplayFight = exports.ShowStatPlayer = exports.ShowStatAndEnnemy = exports.readline = void 0;
 exports.readline = require('readline-sync');
 function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot) {
     console.log('\n');
@@ -21,19 +21,32 @@ function ShowStatPlayer(_player, OriPlayer) {
     console.log("HP: ".concat(_player.hp, " / ").concat(OriPlayer.hp));
 }
 exports.ShowStatPlayer = ShowStatPlayer;
-function DisplayBegin(_player) {
-    var OriPlayer = _player;
+/* export function DisplayBegin(_player: Stats) {
+  let res;
+  const OriPlayer = _player;
+  readline.keyIn('------Start the game or Quit the game :------ ');
+  console.log('-------------------- OPTION --------------------');
+  console.log('            1. Start      2. Quit              ');
+  do {
+    res = Number(readline.question('Your choice : '));
+  } while (res !== 1 && res !== 2);
+  if (res === 1) {
     console.log('========================================');
-    console.log('\x1b[32m%s\x1b[0m', "Your character is ".concat(_player.name, "."));
+    console.log('\x1b[32m%s\x1b[0m', `Your character is ${_player.name}.`);
     console.log('========================================');
     console.log('Your stats : ');
-    console.log("HP : ".concat(_player.hp, " / ").concat(OriPlayer.hp));
-    console.log("STR : ".concat(_player.str));
+    console.log(`HP : ${_player.hp} / ${OriPlayer.hp}`);
+    console.log(`STR : ${_player.str}`);
     console.log('========================================');
-    exports.readline.keyIn('Press Any Key to Start the game : ');
+    readline.keyIn('Press Any Key to Start the game : ');
     console.log('\n');
-}
-exports.DisplayBegin = DisplayBegin;
+  }
+  if (res === 2) {
+    console.log('vous avez quitté le jeu');
+    sleep(5000);
+    return true;
+  }
+} */
 function DisplayFight(_enemies) {
     console.log('\x1b[33m%s\x1b[0m', "You encounter a ".concat(_enemies.name));
 }

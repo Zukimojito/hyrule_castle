@@ -16,6 +16,7 @@ exports.__esModule = true;
 var fct_init_game_1 = require("./fct_init_game/fct_init_game");
 var fct_show_game_1 = require("./fct_show_game/fct_show_game");
 var fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
+var basic_game_customization_1 = require("./basic_game_customization");
 /* const readline = require('readline-sync'); */
 // Original
 var player = require('./jsonObjectGame/players.json');
@@ -86,7 +87,9 @@ function main() {
     var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
     var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
     // Begin
-    (0, fct_show_game_1.DisplayBegin)(Player1);
+    var knowIfEndOrNot = (0, basic_game_customization_1.DisplayBegin)(Player1);
+    if (knowIfEndOrNot)
+        return;
     // In Fight
     InFight(Player1, Enemies1, Boss1);
 }

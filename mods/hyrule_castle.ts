@@ -5,12 +5,14 @@ import {
 } from './fct_init_game/fct_init_game';
 
 import {
-  readline, ShowStatAndEnnemy, ShowStatPlayer, DisplayBegin, DisplayFight,
+  readline, ShowStatAndEnnemy, ShowStatPlayer, DisplayFight,
 } from './fct_show_game/fct_show_game';
 
 import {
   AttackByPlayer, AttackByEnnemy,
 } from './fct_attack_game/fct_attack_game';
+
+import { DisplayBegin } from './basic_game_customization';
 
 import { Stats } from './interface_game/i_game';
 
@@ -83,7 +85,8 @@ function main() {
   const Enemies1: Stats = InitEnemies(enemies);
   const Boss1: Stats = InitBoss(bosses);
   // Begin
-  DisplayBegin(Player1);
+  const knowIfEndOrNot = DisplayBegin(Player1);
+  if (knowIfEndOrNot) return;
   // In Fight
   InFight(Player1, Enemies1, Boss1);
 }
