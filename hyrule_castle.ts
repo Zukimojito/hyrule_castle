@@ -105,6 +105,25 @@ function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
   }
 }
 
+function ShowStatAndEnnemy(i: any, _enemies: any, _player: any, _boss: any, OriEnemies: any, OriBoss: any, BossOrNot:Boolean) {
+  if (i <= 9) {
+    console.log('\n');
+    console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
+    console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
+  } else {
+    console.log('\n');
+    console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
+    console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
+    BossOrNot = true;
+    return BossOrNot;
+  }
+}
+
+function ShowStatPlayer(_player: { name: any; hp: any; }, OriPlayer: { hp: any; }) {
+  console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
+  console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
+}
+
 function DisplayBegin(_player: any) {
   const OriPlayer = _player;
   console.log('========================================');
@@ -153,8 +172,9 @@ function InFight(_player: any, _enemies: any, _boss: any) {
         console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
         BossOrNot = true;
       }
-      console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
-      console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
+      /*    console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
+      console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`); */
+      ShowStatPlayer(_player, OriPlayer);
       const res = OptionInGame();
 
       if (res === 1) {
@@ -183,11 +203,6 @@ function InFight(_player: any, _enemies: any, _boss: any) {
       }
       nbFight += 1;
     }
-    /*     if (_enemies.hp <= 0) {
-      NewEnemies = true;
-      _enemies.hp = OriEnemies.hp;
-      console.log(`${_enemies.name} died !`);
-    } */
     NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
   }
 }

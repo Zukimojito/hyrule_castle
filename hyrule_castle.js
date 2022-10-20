@@ -110,6 +110,24 @@ function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
         return NewEnemies;
     }
 }
+function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot) {
+    if (i <= 9) {
+        console.log('\n');
+        console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(i, ")"));
+        console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
+    }
+    else {
+        console.log('\n');
+        console.log('\x1b[31m%s\x1b[0m', "".concat(_boss.name, " (Boss)"));
+        console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
+        BossOrNot = true;
+        return BossOrNot;
+    }
+}
+function ShowStatPlayer(_player, OriPlayer) {
+    console.log('\x1b[32m%s\x1b[0m', "".concat(_player.name, " (player)"));
+    console.log("HP: ".concat(_player.hp, " / ").concat(OriPlayer.hp));
+}
 function DisplayBegin(_player) {
     var OriPlayer = _player;
     console.log('========================================');
@@ -162,8 +180,9 @@ function InFight(_player, _enemies, _boss) {
                 console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
                 BossOrNot = true;
             }
-            console.log('\x1b[32m%s\x1b[0m', "".concat(_player.name, " (player)"));
-            console.log("HP: ".concat(_player.hp, " / ").concat(OriPlayer.hp));
+            /*    console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
+            console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`); */
+            ShowStatPlayer(_player, OriPlayer);
             var res = OptionInGame();
             if (res === 1) {
                 console.log('==================== INFOS ====================');
@@ -199,11 +218,6 @@ function InFight(_player, _enemies, _boss) {
             }
             nbFight += 1;
         }
-        /*     if (_enemies.hp <= 0) {
-          NewEnemies = true;
-          _enemies.hp = OriEnemies.hp;
-          console.log(`${_enemies.name} died !`);
-        } */
         NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
     }
 }
