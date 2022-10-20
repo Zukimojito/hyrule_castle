@@ -96,7 +96,7 @@ function InitBoss(_boss: any) {
   return CopyBoss;
 }
 
-function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
+function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any, OriEnemies: Stats) {
   if (_enemies.hp <= 0) {
     NewEnemies = true;
     _enemies.hp = OriEnemies.hp;
@@ -105,7 +105,7 @@ function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
   }
 }
 
-function ShowStatAndEnnemy(i: any, _enemies: any, _player: any, _boss: any, OriEnemies: any, OriBoss: any, BossOrNot: any) {
+function ShowStatAndEnnemy(i: number, _enemies: Stats, _player: Stats, _boss: Stats, OriEnemies: Stats, OriBoss: Stats, BossOrNot: any) {
   console.log('\n');
   if (i <= 9) {
     console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
@@ -118,12 +118,12 @@ function ShowStatAndEnnemy(i: any, _enemies: any, _player: any, _boss: any, OriE
   }
 }
 
-function ShowStatPlayer(_player: { name: any; hp: any; }, OriPlayer: { hp: any; }) {
+function ShowStatPlayer(_player: Stats, OriPlayer: Stats) {
   console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
   console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`);
 }
 
-function DisplayBegin(_player: any) {
+function DisplayBegin(_player: Stats) {
   const OriPlayer = _player;
   console.log('========================================');
   console.log('\x1b[32m%s\x1b[0m', `Your character is ${_player.name}.`);
@@ -135,6 +135,7 @@ function DisplayBegin(_player: any) {
   readline.keyIn('Press Any Key to Start the game : ');
   console.log('\n');
 }
+
 function OptionInGame() {
   let res;
   console.log('-------------------- OPTION --------------------');
@@ -144,11 +145,11 @@ function OptionInGame() {
   } while (res !== 1 && res !== 2);
   return res;
 }
-function DisplayFight(_enemies: any) {
+function DisplayFight(_enemies: Stats) {
   console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
 }
 
-function AttackByPlayer(_player: any, _enemies: any, _boss: any, BossOrNot: any) {
+function AttackByPlayer(_player: Stats, _enemies: Stats, _boss: Stats, BossOrNot: any) {
   console.log('==================== INFOS ====================');
   console.log(`You attacked and dealt ${_player.str} damages !`);
   if (!BossOrNot) {
@@ -161,7 +162,7 @@ function AttackByPlayer(_player: any, _enemies: any, _boss: any, BossOrNot: any)
   }
   console.log('\n');
 }
-function AttackByEnnemy(BossOrNot: any, _player: any, _enemies: any, _boss: any) {
+function AttackByEnnemy(BossOrNot: any, _player: Stats, _enemies: Stats, _boss: Stats) {
   if (!BossOrNot) {
     _player.hp -= _enemies.str;
     if (_player.hp <= 0) { console.log(`${_player.name} died !`); return true; }
@@ -171,14 +172,14 @@ function AttackByEnnemy(BossOrNot: any, _player: any, _enemies: any, _boss: any)
   }
 }
 
-function HealGame(OriPlayer: any, _player: any) {
+function HealGame(OriPlayer: Stats, _player: Stats) {
   console.log(`You chose heal ! You heal yourself ${OriPlayer.hp / 2} HP`);
   _player.hp += (OriPlayer.hp / 2);
   if (_player.hp > OriPlayer.hp) {
     _player.hp = OriPlayer.hp;
   }
 }
-function InFight(_player: any, _enemies: any, _boss: any) {
+function InFight(_player: Stats, _enemies: Stats, _boss: Stats) {
   const OriPlayer = { ..._player };
   const OriEnemies = { ..._enemies };
   const OriBoss = { ..._boss };
