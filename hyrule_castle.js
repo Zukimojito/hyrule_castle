@@ -111,7 +111,7 @@ function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
     }
 }
 function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot) {
-    if (i <= 9) {
+    if (i <= 3) {
         console.log('\n');
         console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(i, ")"));
         console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
@@ -160,7 +160,7 @@ function InFight(_player, _enemies, _boss) {
     var NewEnemies = true;
     /* let nbEnemies = 1; */
     var BossOrNot = false;
-    for (var i = 1; i <= 10; i += 1) {
+    for (var i = 1; i <= 4; i += 1) {
         console.log("nombre de boucle actuelLLLLLLLLLLLLLLLLLLE : ".concat(i));
         while (_enemies.hp > 1) {
             console.log("==================== FIGHT ".concat(nbFight, " ===================="));
@@ -169,19 +169,16 @@ function InFight(_player, _enemies, _boss) {
                 DisplayFight(_enemies);
                 NewEnemies = false;
             }
-            if (i <= 9) {
-                console.log('\n');
-                console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(i, ")"));
-                console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
-            }
-            else {
-                console.log('\n');
-                console.log('\x1b[31m%s\x1b[0m', "".concat(_boss.name, " (Boss)"));
-                console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
-                BossOrNot = true;
-            }
-            /*    console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
-            console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`); */
+            /*       if (i <= 9) {
+              console.log('\n');
+              console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
+              console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
+            } else {
+              console.log('\n');
+              console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
+              console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
+              BossOrNot = true;
+            } */ BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
             ShowStatPlayer(_player, OriPlayer);
             var res = OptionInGame();
             if (res === 1) {

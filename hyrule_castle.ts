@@ -105,7 +105,7 @@ function ReloadHpEnnemy(_enemies: any, NewEnemies: any, OriEnemies: any) {
   }
 }
 
-function ShowStatAndEnnemy(i: any, _enemies: any, _player: any, _boss: any, OriEnemies: any, OriBoss: any, BossOrNot:Boolean) {
+function ShowStatAndEnnemy(i: any, _enemies: any, _player: any, _boss: any, OriEnemies: any, OriBoss: any, BossOrNot: any) {
   if (i <= 9) {
     console.log('\n');
     console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
@@ -162,18 +162,7 @@ function InFight(_player: any, _enemies: any, _boss: any) {
       console.log(`==================== FIGHT ${nbFight} ====================`);
       console.log(`valeur de NewEnmy ${NewEnemies}`);
       if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
-      if (i <= 9) {
-        console.log('\n');
-        console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
-        console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
-      } else {
-        console.log('\n');
-        console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
-        console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
-        BossOrNot = true;
-      }
-      /*    console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
-      console.log(`HP: ${_player.hp} / ${OriPlayer.hp}`); */
+      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
       ShowStatPlayer(_player, OriPlayer);
       const res = OptionInGame();
 
