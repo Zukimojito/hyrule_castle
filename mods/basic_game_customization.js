@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.ChangeStatByDifficulty = exports.DisplayBegin = exports.initGameAndDifficulty = exports.chooseYourDifficulty = exports.sleep = exports.readline = void 0;
+exports.ChangeStatByDifficulty = exports.DisplayBegin = exports.AddCoins = exports.Generate12Coins = exports.initGameAndDifficulty = exports.chooseYourDifficulty = exports.sleep = exports.readline = void 0;
 exports.readline = require('readline-sync');
 function sleep(milliseconds) {
     var date = Date.now();
@@ -10,16 +10,6 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 exports.sleep = sleep;
-/* export const enum Difficulty {
-  normal = 1,
-  difficult = 2,
-  insane = 3,
-}
-
-export const enum StartOrQuit {
-  start = 1,
-  quit = 2,
-} */
 function ChooseStartOrQuit() {
     var res;
     console.log('------Start the game or Quit the game :---------');
@@ -65,7 +55,17 @@ function initGameAndDifficulty() {
     }
 }
 exports.initGameAndDifficulty = initGameAndDifficulty;
-function DisplayBegin(_player) {
+function Generate12Coins() {
+    var coins = 12;
+    return coins;
+}
+exports.Generate12Coins = Generate12Coins;
+function AddCoins(coins) {
+    coins += 1;
+    return coins;
+}
+exports.AddCoins = AddCoins;
+function DisplayBegin(_player, Coins) {
     var OriPlayer = _player;
     console.log('========================================');
     console.log('\x1b[32m%s\x1b[0m', "Your character is ".concat(_player.name, "."));
@@ -73,6 +73,7 @@ function DisplayBegin(_player) {
     console.log('Your stats : ');
     console.log("HP : ".concat(_player.hp, " / ").concat(OriPlayer.hp));
     console.log("STR : ".concat(_player.str));
+    console.log("Your receive ".concat(Coins, " coins"));
     console.log('========================================');
     exports.readline.keyIn('Press Any Key to Start the game : ');
     console.log('\n');

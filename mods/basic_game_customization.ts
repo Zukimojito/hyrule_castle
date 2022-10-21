@@ -1,13 +1,13 @@
 /*
  DONE - The game starts on a title screen with the options
  “New Game” that starts a new game and “Quit” that exits the program
-- When starting a new game, the player can set the difficulty to “Normal”, “Difficult” or “Insane”
--- In “Difficult” mode, every enemy statistics is multiplied by 1.5
--- In “Insane” mode, every enemy statistics is multiplied by 2
+DONE- When starting a new game, the player can set the difficulty to “Normal”, “Difficult” or “Insane”
+DONE-- In “Difficult” mode, every enemy statistics is multiplied by 1.5
+DONE-- In “Insane” mode, every enemy statistics is multiplied by 2
 Then, the player can set the number of fights to:
  10, 20, 50 or 100. Every 10 fights, the player encounters a boss.
  ---------------------------------------------------------------------
-The player starts with 12 coins. He gains 1 coin after every victory.
+DONE The player starts with 12 coins. He gains 1 coin after every victory.
  */
 import { Stats } from './interface_game/i_game';
 
@@ -20,17 +20,6 @@ export function sleep(milliseconds: number) {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
 }
-
-/* export const enum Difficulty {
-  normal = 1,
-  difficult = 2,
-  insane = 3,
-}
-
-export const enum StartOrQuit {
-  start = 1,
-  quit = 2,
-} */
 
 function ChooseStartOrQuit() {
   let res: number;
@@ -77,7 +66,17 @@ export function initGameAndDifficulty() {
   }
 }
 
-export function DisplayBegin(_player: Stats) {
+export function Generate12Coins() {
+  const coins: number = 12;
+  return coins;
+}
+
+export function AddCoins(coins: number) {
+  coins += 1;
+  return coins;
+}
+
+export function DisplayBegin(_player: Stats, Coins) {
   const OriPlayer = _player;
   console.log('========================================');
   console.log('\x1b[32m%s\x1b[0m', `Your character is ${_player.name}.`);
@@ -85,6 +84,7 @@ export function DisplayBegin(_player: Stats) {
   console.log('Your stats : ');
   console.log(`HP : ${_player.hp} / ${OriPlayer.hp}`);
   console.log(`STR : ${_player.str}`);
+  console.log(`Your receive ${Coins} coins`);
   console.log('========================================');
   readline.keyIn('Press Any Key to Start the game : ');
   console.log('\n');

@@ -46,7 +46,7 @@ function HealGame(OriPlayer, _player) {
         _player.hp = OriPlayer.hp;
     }
 }
-function InFight(_player, _enemies, _boss) {
+function InFight(_player, _enemies, _boss, Coins) {
     var OriPlayer = __assign({}, _player);
     var OriEnemies = __assign({}, _enemies);
     var OriBoss = __assign({}, _boss);
@@ -63,7 +63,7 @@ function InFight(_player, _enemies, _boss) {
                 NewEnemies = false;
             }
             BossOrNot = (0, fct_show_game_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
-            (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer);
+            (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer, Coins);
             var res = OptionInGame();
             if (res === 1) {
                 var checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot);
@@ -92,10 +92,11 @@ function main() {
     // Initialisation Enemies, Bosses
     var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
     var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
+    var Coins = (0, basic_game_customization_1.Generate12Coins)();
     (0, basic_game_customization_1.ChangeStatByDifficulty)(knowIfEndOrNotAndDifficulty, Enemies1);
     console.log("test main si modif value ".concat(JSON.stringify(Enemies1)));
-    (0, basic_game_customization_1.DisplayBegin)(Player1);
+    (0, basic_game_customization_1.DisplayBegin)(Player1, Coins);
     // In Fight
-    InFight(Player1, Enemies1, Boss1);
+    InFight(Player1, Enemies1, Boss1, Coins);
 }
 main();

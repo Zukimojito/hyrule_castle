@@ -12,7 +12,9 @@ import {
   AttackByPlayer, AttackByEnnemy,
 } from './fct_attack_game/fct_attack_game';
 
-import { DisplayBegin, initGameAndDifficulty, ChangeStatByDifficulty } from './basic_game_customization';
+import {
+  DisplayBegin, initGameAndDifficulty, ChangeStatByDifficulty, Generate12Coins, AddCoins,
+} from './basic_game_customization';
 
 import { Stats } from './interface_game/i_game';
 
@@ -48,7 +50,7 @@ function HealGame(OriPlayer: Stats, _player: Stats) {
     _player.hp = OriPlayer.hp;
   }
 }
-function InFight(_player: Stats, _enemies: Stats, _boss: Stats) {
+function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number) {
   const OriPlayer = { ..._player };
   const OriEnemies = { ..._enemies };
   const OriBoss = { ..._boss };
@@ -62,7 +64,7 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats) {
       console.log(`valeur de NewEnmy ${NewEnemies}`);
       if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
       BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
-      ShowStatPlayer(_player, OriPlayer);
+      ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
       if (res === 1) {
@@ -89,12 +91,12 @@ function main() {
   // Initialisation Enemies, Bosses
   const Enemies1 = InitEnemies(enemies);
   const Boss1 = InitBoss(bosses);
-
+  let Coins = Generate12Coins();
   ChangeStatByDifficulty(knowIfEndOrNotAndDifficulty, Enemies1);
   console.log(`test main si modif value ${JSON.stringify(Enemies1)}`);
-  DisplayBegin(Player1);
+  DisplayBegin(Player1, Coins);
   // In Fight
-  InFight(Player1, Enemies1, Boss1);
+  InFight(Player1, Enemies1, Boss1, Coins);
 }
 
 main();
