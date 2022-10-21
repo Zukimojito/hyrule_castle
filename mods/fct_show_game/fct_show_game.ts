@@ -10,6 +10,10 @@ export function ShowStatPlayer(_player: Stats, OriPlayer: Stats, Coins: number) 
   console.log(`Coins: ${Coins}`);
 }
 
-export function DisplayFight(_enemies: Stats) {
-  console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
+export function DisplayFight(_enemies: Stats, _boss: Stats, BossorNot: any) {
+  if (!BossorNot) {
+    console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
+  } else {
+    console.log('\x1b[33m%s\x1b[0m', `You Encounter a ${_boss.name}`);
+  }
 }

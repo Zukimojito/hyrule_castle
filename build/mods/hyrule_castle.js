@@ -48,14 +48,14 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
             console.log(`valeur de NewEnmy ${NewEnemies}`);
             if (NewEnemies) {
-                (0, fct_show_game_1.DisplayFight)(_enemies);
+                (0, fct_show_game_1.DisplayFight)(_enemies, _boss, BossOrNot);
                 NewEnemies = false;
             }
-            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
+            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
             (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer, Coins);
             const res = OptionInGame();
             if (res === 1) {
-                const checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot);
+                const checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot, nbFight, i);
                 if (checkIfbossIsDie)
                     return true;
             }

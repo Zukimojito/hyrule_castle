@@ -131,9 +131,9 @@ function PlayerChoiceNbFight() {
     return valeur;
 }
 exports.PlayerChoiceNbFight = PlayerChoiceNbFight;
-function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot) {
+function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight) {
     console.log('\n');
-    if (i <= 9) {
+    if (i % 10 !== 0) {
         console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
         console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
     }

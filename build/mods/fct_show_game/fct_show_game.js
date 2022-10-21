@@ -8,7 +8,12 @@ function ShowStatPlayer(_player, OriPlayer, Coins) {
     console.log(`Coins: ${Coins}`);
 }
 exports.ShowStatPlayer = ShowStatPlayer;
-function DisplayFight(_enemies) {
-    console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
+function DisplayFight(_enemies, _boss, BossorNot) {
+    if (!BossorNot) {
+        console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
+    }
+    else {
+        console.log('\x1b[33m%s\x1b[0m', `You Encounter a ${_boss.name}`);
+    }
 }
 exports.DisplayFight = DisplayFight;

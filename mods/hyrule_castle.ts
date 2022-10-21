@@ -63,13 +63,13 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
     while (_enemies.hp > 1) {
       console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
       console.log(`valeur de NewEnmy ${NewEnemies}`);
-      if (NewEnemies) { DisplayFight(_enemies); NewEnemies = false; }
-      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
+      if (NewEnemies) { DisplayFight(_enemies, _boss, BossOrNot); NewEnemies = false; }
+      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
       if (res === 1) {
-        const checkIfbossIsDie = AttackByPlayer(_player, _enemies, _boss, BossOrNot);
+        const checkIfbossIsDie = AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i);
         if (checkIfbossIsDie) return true;
       } else if (res === 2) {
         HealGame(OriPlayer, _player);
