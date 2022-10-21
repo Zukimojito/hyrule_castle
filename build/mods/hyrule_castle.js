@@ -6,6 +6,7 @@ const fct_init_game_1 = require("./fct_init_game/fct_init_game");
 const fct_show_game_1 = require("./fct_show_game/fct_show_game");
 const fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
 const basic_game_customization_1 = require("./basic_game_customization");
+const random_game_events_1 = require("./random_game_events");
 /* const readline = require('readline-sync'); */
 // Original
 const player = require('./jsonObjectGame/players.json');
@@ -56,6 +57,7 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
             console.log(`valeur de NewEnmy ${NewEnemies}`);
             if (NewEnemies) {
+                Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins);
                 (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
