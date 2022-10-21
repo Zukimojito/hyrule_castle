@@ -21,11 +21,16 @@ var fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
 var player = require('./jsonObjectGame/players.json');
 var enemies = require('./jsonObjectGame/enemies.json');
 var bosses = require('./jsonObjectGame/bosses.json');
-function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
+function ReloadHpEnnemy(_enemies, NewEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;
-        _enemies.hp = OriEnemies.hp;
+        var randomNum = (0, fct_init_game_1.getRandomInt)();
+        var randomNewEnnemy = (0, fct_init_game_1.InitEnemies)(enemies, randomNum);
+        _enemies.hp = randomNewEnnemy.hp;
+        _enemies.name = randomNewEnnemy.name;
+        _enemies.str = randomNewEnnemy.str;
         console.log("".concat(_enemies.name, " died !"));
+        _enemies = randomNewEnnemy;
         return NewEnemies;
     }
 }
@@ -77,14 +82,15 @@ function InFight(_player, _enemies, _boss) {
                 return;
             nbFight += 1;
         }
-        NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+        NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
     }
 }
 function main() {
+    var Rdinit = (0, fct_init_game_1.getRandomInt)();
     // Initialisation Player, Enemies, Bosses
-    var Player1 = (0, fct_init_game_1.InitPlayer)(player);
-    var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
-    var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
+    var Player1 = (0, fct_init_game_1.InitPlayer)(player, Rdinit);
+    var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies, Rdinit);
+    var Boss1 = (0, fct_init_game_1.InitBoss)(bosses, Rdinit);
     // Begin
     (0, fct_show_game_1.DisplayBegin)(Player1);
     // In Fight

@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
 import {
-  InitPlayer, InitEnemies, InitBoss,
+  InitPlayer, InitEnemies, InitBoss, getRandomInt,
 } from './fct_init_game/fct_init_game';
 
 import {
@@ -26,19 +26,28 @@ const player = require('./jsonObjectGame/players.json');
 const enemies = require('./jsonObjectGame/enemies.json');
 const bosses = require('./jsonObjectGame/bosses.json');
 
-function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any, OriEnemies: Stats) {
+function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any) {
   if (_enemies.hp <= 0) {
     NewEnemies = true;
-    _enemies.hp = OriEnemies.hp;
+    const randomNum = getRandomInt();
+    const randomNewEnnemy: Stats = InitEnemies(enemies, randomNum);
+    _enemies.hp = randomNewEnnemy.hp;
+    _enemies.name = randomNewEnnemy.name;
+    _enemies.str = randomNewEnnemy.str;
     console.log(`${_enemies.name} died !`);
+    _enemies = randomNewEnnemy;
     return NewEnemies;
   }
 }
 
-function ReloadHpBoss(_boss: Stats, NewEnemies: any, OriBoss: Stats) {
+function ReloadHpBoss(_boss: Stats, NewEnemies: any) {
   if (_boss.hp <= 0) {
     NewEnemies = true;
-    _boss.hp = OriBoss.hp;
+    const randomNumBoss = getRandomInt();
+    const randomNewBoss: Stats = InitBoss(enemies, randomNumBoss);
+    _boss.hp = randomNewBoss.hp;
+    _boss.name = randomNewBoss.name;
+    _boss.str = randomNewBoss.str;
     console.log(`${_boss.name} died !`);
     return NewEnemies;
   }
@@ -92,22 +101,23 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
       if (checkIfPlayerIsGone) return;
     }
     if (i % 10 !== 0) {
-      NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
-    } else { NewEnemies = ReloadHpBoss(_boss, NewEnemies, OriBoss); }
+      NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
+    } else { NewEnemies = ReloadHpBoss(_boss, NewEnemies); }
     Coins = AddCoins(Coins);
   }
 }
 
 function main() {
   // Initialisation Player
-  const Player1: Stats = InitPlayer(player);
+  const Rdinit = getRandomInt();
+  const Player1: Stats = InitPlayer(player, Rdinit);
   // Begin
   const knowIfEndOrNotAndDifficulty = initGameAndDifficulty();
   console.log(knowIfEndOrNotAndDifficulty);
   if (knowIfEndOrNotAndDifficulty === 0) return;
   // Initialisation Enemies, Bosses
-  const Enemies1 = InitEnemies(enemies);
-  const Boss1 = InitBoss(bosses);
+  const Enemies1 = InitEnemies(enemies, Rdinit);
+  const Boss1 = InitBoss(bosses, Rdinit);
   const nbFight = PlayerChoiceNbFight();
   const Coins = Generate12Coins();
   ChangeStatByDifficulty(knowIfEndOrNotAndDifficulty, Enemies1);

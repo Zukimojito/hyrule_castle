@@ -1,6 +1,6 @@
 import { Stats } from '../interface_game/i_game';
 
-function getRandomInt() {
+export function getRandomInt() {
   // Returns a random integer from 0 to 100:
   const random = Math.floor(Math.random() * 100) + 1;
   let arrayPlayerEnemiesBoss: number = 0;
@@ -19,8 +19,8 @@ function getRandomInt() {
   return arrayPlayerEnemiesBoss;
 }
 
-const Rdinit = getRandomInt();
-export function InitPlayer(_player: any) {
+/* export const Rdinit = getRandomInt(); */
+export function InitPlayer(_player: any, Rdinit: any) {
   let CopyPlayer: Stats = {
     id: 0,
     name: '',
@@ -41,7 +41,7 @@ export function InitPlayer(_player: any) {
   });
   return CopyPlayer;
 }
-export function InitEnemies(_enemies: any) {
+export function InitEnemies(_enemies: any, Rdinit: any) {
   let CopyEnemies: Stats = {
     id: 0,
     name: '',
@@ -62,7 +62,7 @@ export function InitEnemies(_enemies: any) {
   });
   return CopyEnemies;
 }
-export function InitBoss(_boss: any) {
+export function InitBoss(_boss: any, Rdinit: any) {
   let CopyBoss: Stats = {
     id: 0,
     name: '',

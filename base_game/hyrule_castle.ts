@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable max-len */
 import {
-  InitPlayer, InitEnemies, InitBoss,
+  InitPlayer, InitEnemies, InitBoss, getRandomInt,
 } from './fct_init_game/fct_init_game';
 
 import {
@@ -20,11 +20,16 @@ const player = require('./jsonObjectGame/players.json');
 const enemies = require('./jsonObjectGame/enemies.json');
 const bosses = require('./jsonObjectGame/bosses.json');
 
-function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any, OriEnemies: Stats) {
+function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any) {
   if (_enemies.hp <= 0) {
     NewEnemies = true;
-    _enemies.hp = OriEnemies.hp;
+    const randomNum = getRandomInt();
+    const randomNewEnnemy: Stats = InitEnemies(enemies, randomNum);
+    _enemies.hp = randomNewEnnemy.hp;
+    _enemies.name = randomNewEnnemy.name;
+    _enemies.str = randomNewEnnemy.str;
     console.log(`${_enemies.name} died !`);
+    _enemies = randomNewEnnemy;
     return NewEnemies;
   }
 }
@@ -73,15 +78,16 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats) {
       if (checkIfPlayerIsGone) return;
       nbFight += 1;
     }
-    NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+    NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
   }
 }
 
 function main() {
+  const Rdinit = getRandomInt();
   // Initialisation Player, Enemies, Bosses
-  const Player1: Stats = InitPlayer(player);
-  const Enemies1: Stats = InitEnemies(enemies);
-  const Boss1: Stats = InitBoss(bosses);
+  const Player1: Stats = InitPlayer(player, Rdinit);
+  const Enemies1: Stats = InitEnemies(enemies, Rdinit);
+  const Boss1: Stats = InitBoss(bosses, Rdinit);
   // Begin
   DisplayBegin(Player1);
   // In Fight

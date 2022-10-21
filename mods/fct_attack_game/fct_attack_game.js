@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.AttackByEnnemy = exports.AttackByPlayer = void 0;
-function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
+function AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i) {
     console.log('==================== INFOS ====================');
     console.log("You attacked and dealt ".concat(_player.str, " damages !"));
     if (!BossOrNot) {

@@ -17,16 +17,34 @@ var fct_init_game_1 = require("./fct_init_game/fct_init_game");
 var fct_show_game_1 = require("./fct_show_game/fct_show_game");
 var fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
 var basic_game_customization_1 = require("./basic_game_customization");
+var random_game_events_1 = require("./random_game_events");
 /* const readline = require('readline-sync'); */
 // Original
 var player = require('./jsonObjectGame/players.json');
 var enemies = require('./jsonObjectGame/enemies.json');
 var bosses = require('./jsonObjectGame/bosses.json');
-function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
+function ReloadHpEnnemy(_enemies, NewEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;
-        _enemies.hp = OriEnemies.hp;
+        var randomNum = (0, fct_init_game_1.getRandomInt)();
+        var randomNewEnnemy = (0, fct_init_game_1.InitEnemies)(enemies, randomNum);
+        _enemies.hp = randomNewEnnemy.hp;
+        _enemies.name = randomNewEnnemy.name;
+        _enemies.str = randomNewEnnemy.str;
         console.log("".concat(_enemies.name, " died !"));
+        _enemies = randomNewEnnemy;
+        return NewEnemies;
+    }
+}
+function ReloadHpBoss(_boss, NewEnemies) {
+    if (_boss.hp <= 0) {
+        NewEnemies = true;
+        var randomNumBoss = (0, fct_init_game_1.getRandomInt)();
+        var randomNewBoss = (0, fct_init_game_1.InitBoss)(enemies, randomNumBoss);
+        _boss.hp = randomNewBoss.hp;
+        _boss.name = randomNewBoss.name;
+        _boss.str = randomNewBoss.str;
+        console.log("".concat(_boss.name, " died !"));
         return NewEnemies;
     }
 }
@@ -46,29 +64,32 @@ function HealGame(OriPlayer, _player) {
         _player.hp = OriPlayer.hp;
     }
 }
-function InFight(_player, _enemies, _boss, Coins) {
+function InFight(_player, _enemies, _boss, Coins, nbFight) {
     var OriPlayer = __assign({}, _player);
     var OriEnemies = __assign({}, _enemies);
     var OriBoss = __assign({}, _boss);
-    var nbFight = 1;
     var NewEnemies = true;
     var BossOrNot = false;
+    console.log("NbFight : ---- ".concat(nbFight));
     /* ================ Boucle de jeu ================== */
-    for (var i = 1; i <= 10; i += 1) {
-        while (_enemies.hp > 1) {
-            console.log("==================== FIGHT ".concat(nbFight, " ===================="));
+    for (var i = 1; i <= nbFight; i += 1) {
+        while (_enemies.hp > 1 && _boss.hp > 1) {
+            console.log("==================== FIGHT ".concat(i, "/").concat(nbFight, " ===================="));
             console.log("valeur de NewEnmy ".concat(NewEnemies));
             if (NewEnemies) {
-                (0, fct_show_game_1.DisplayFight)(_enemies);
+                Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins, OriPlayer);
+                (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
-            BossOrNot = (0, fct_show_game_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
+            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
             (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer, Coins);
             var res = OptionInGame();
             if (res === 1) {
-                var checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot);
-                if (checkIfbossIsDie)
+                var checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot, nbFight, i);
+                if (checkIfbossIsDie && i === nbFight) {
                     return true;
+                }
+                BossOrNot = false;
             }
             else if (res === 2) {
                 HealGame(OriPlayer, _player);
@@ -76,27 +97,35 @@ function InFight(_player, _enemies, _boss, Coins) {
             var checkIfPlayerIsGone = (0, fct_attack_game_1.AttackByEnnemy)(BossOrNot, _player, _enemies, _boss);
             if (checkIfPlayerIsGone)
                 return;
-            nbFight += 1;
         }
-        NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+        if (i % 10 !== 0) {
+            NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
+        }
+        else {
+            NewEnemies = ReloadHpBoss(_boss, NewEnemies);
+        }
+        Coins = (0, basic_game_customization_1.AddCoins)(Coins);
     }
 }
 function main() {
     // Initialisation Player
-    var Player1 = (0, fct_init_game_1.InitPlayer)(player);
+    var Rdinit = (0, fct_init_game_1.getRandomInt)();
+    var Player1 = (0, fct_init_game_1.InitPlayer)(player, Rdinit);
     // Begin
     var knowIfEndOrNotAndDifficulty = (0, basic_game_customization_1.initGameAndDifficulty)();
     console.log(knowIfEndOrNotAndDifficulty);
     if (knowIfEndOrNotAndDifficulty === 0)
         return;
     // Initialisation Enemies, Bosses
-    var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
-    var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
+    var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies, Rdinit);
+    var Boss1 = (0, fct_init_game_1.InitBoss)(bosses, Rdinit);
+    var nbFight = (0, basic_game_customization_1.PlayerChoiceNbFight)();
     var Coins = (0, basic_game_customization_1.Generate12Coins)();
     (0, basic_game_customization_1.ChangeStatByDifficulty)(knowIfEndOrNotAndDifficulty, Enemies1);
     console.log("test main si modif value ".concat(JSON.stringify(Enemies1)));
+    // display menu
     (0, basic_game_customization_1.DisplayBegin)(Player1, Coins);
     // In Fight
-    InFight(Player1, Enemies1, Boss1, Coins);
+    InFight(Player1, Enemies1, Boss1, Coins, nbFight);
 }
 main();

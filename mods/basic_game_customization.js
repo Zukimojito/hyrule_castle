@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.ChangeStatByDifficulty = exports.DisplayBegin = exports.AddCoins = exports.Generate12Coins = exports.initGameAndDifficulty = exports.chooseYourDifficulty = exports.sleep = exports.readline = void 0;
+exports.ShowStatAndEnnemy = exports.PlayerChoiceNbFight = exports.ChangeStatByDifficulty = exports.DisplayBegin = exports.AddCoins = exports.Generate12Coins = exports.initGameAndDifficulty = exports.chooseYourDifficulty = exports.sleep = exports.readline = void 0;
 exports.readline = require('readline-sync');
 function sleep(milliseconds) {
     var date = Date.now();
@@ -28,7 +28,7 @@ function ChooseStartOrQuit() {
 // eslint-disable-next-line consistent-return
 function chooseYourDifficulty() {
     console.log('--------- Choose your difficulty :----------------');
-    console.log('-------------------- OPTION --------------------');
+    console.log('-------------------- OPTION ----------------------');
     console.log('            1. Normal      2. Difficult      3. Insane         ');
     var resDifficulty;
     do {
@@ -62,6 +62,7 @@ function Generate12Coins() {
 exports.Generate12Coins = Generate12Coins;
 function AddCoins(coins) {
     coins += 1;
+    console.log('\x1b[36m%s\x1b[0m', 'You have gained 1 coin !');
     return coins;
 }
 exports.AddCoins = AddCoins;
@@ -100,3 +101,47 @@ function ChangeStatByDifficulty(difficulty, _ennemy) {
     return _ennemy;
 }
 exports.ChangeStatByDifficulty = ChangeStatByDifficulty;
+function PlayerChoiceNbFight() {
+    console.log('--------- Choose your number of fights :----------------');
+    console.log('-------------------- OPTION ----------------------');
+    console.log('Option [1] : 10 Fight ');
+    console.log('Option [2] : 20 Fight ');
+    console.log('Option [3] : 50 Fight ');
+    console.log('Option [4] : 100 Fight ');
+    var valeur;
+    do {
+        valeur = Number(exports.readline.question(''));
+    } while (valeur !== 1 && valeur !== 2 && valeur !== 3 && valeur !== 4);
+    // eslint-disable-next-line default-case
+    switch (valeur) {
+        case 1:
+            valeur = 10;
+            break;
+        case 2:
+            valeur = 20;
+            break;
+        case 3:
+            valeur = 50;
+            break;
+        case 4:
+            valeur = 50;
+            break;
+        default:
+    }
+    return valeur;
+}
+exports.PlayerChoiceNbFight = PlayerChoiceNbFight;
+function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight) {
+    console.log('\n');
+    if (i % 10 !== 0) {
+        console.log('\x1b[31m%s\x1b[0m', "".concat(_enemies.name, " (ennemies ").concat(i, ")"));
+        console.log("HP: ".concat(_enemies.hp, " / ").concat(OriEnemies.hp));
+    }
+    else {
+        console.log('\x1b[31m%s\x1b[0m', "".concat(_boss.name, " (Boss)"));
+        console.log("HP: ".concat(_boss.hp, " / ").concat(OriBoss.hp));
+        BossOrNot = true;
+        return BossOrNot;
+    }
+}
+exports.ShowStatAndEnnemy = ShowStatAndEnnemy;
