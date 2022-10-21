@@ -41,7 +41,7 @@ function ChooseStartOrQuit() {
 // eslint-disable-next-line consistent-return
 export function chooseYourDifficulty() {
   console.log('--------- Choose your difficulty :----------------');
-  console.log('-------------------- OPTION --------------------');
+  console.log('-------------------- OPTION ----------------------');
   console.log('            1. Normal      2. Difficult      3. Insane         ');
   let resDifficulty: number;
   do {
@@ -113,4 +113,39 @@ export function ChangeStatByDifficulty(difficulty: any, _ennemy: Stats) {
 
   // eslint-disable-next-line consistent-return
   return _ennemy;
+}
+
+export function PlayerChoiceNbFight() {
+  console.log('--------- Choose your number of fights :----------------');
+  console.log('-------------------- OPTION ----------------------');
+  console.log('Option [1] : 10 Fight ');
+  console.log('Option [2] : 20 Fight ');
+  console.log('Option [3] : 50 Fight ');
+  console.log('Option [4] : 100 Fight ');
+  let valeur: number;
+  do {
+    valeur = Number(readline.question(''));
+  } while (valeur !== 1 && valeur !== 2 && valeur !== 3 && valeur !== 4);
+  // eslint-disable-next-line default-case
+  switch (valeur) {
+    case 1: valeur = 10; break;
+    case 2: valeur = 20; break;
+    case 3: valeur = 50; break;
+    case 4: valeur = 50; break;
+    default:
+  }
+  return valeur;
+}
+
+export function ShowStatAndEnnemy(i: number, _enemies: Stats, _player: Stats, _boss: Stats, OriEnemies: Stats, OriBoss: Stats, BossOrNot: any) {
+  console.log('\n');
+  if (i <= 9) {
+    console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
+    console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
+  } else {
+    console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
+    console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
+    BossOrNot = true;
+    return BossOrNot;
+  }
 }
