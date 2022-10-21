@@ -19,6 +19,14 @@ function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
         return NewEnemies;
     }
 }
+function ReloadHpBoss(_boss, NewEnemies, OriBoss) {
+    if (_boss.hp <= 0) {
+        NewEnemies = true;
+        _boss.hp = OriBoss.hp;
+        console.log(`${_boss.name} died !`);
+        return NewEnemies;
+    }
+}
 function OptionInGame() {
     let res;
     console.log('-------------------- OPTION --------------------');
@@ -44,11 +52,11 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
     console.log(`NbFight : ---- ${nbFight}`);
     /* ================ Boucle de jeu ================== */
     for (let i = 1; i <= nbFight; i += 1) {
-        while (_enemies.hp > 1) {
+        while (_enemies.hp > 1 && _boss.hp > 1) {
             console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
             console.log(`valeur de NewEnmy ${NewEnemies}`);
             if (NewEnemies) {
-                (0, fct_show_game_1.DisplayFight)(_enemies, _boss, BossOrNot);
+                (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
             BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
@@ -56,8 +64,10 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             const res = OptionInGame();
             if (res === 1) {
                 const checkIfbossIsDie = (0, fct_attack_game_1.AttackByPlayer)(_player, _enemies, _boss, BossOrNot, nbFight, i);
-                if (checkIfbossIsDie)
+                if (checkIfbossIsDie && i === nbFight) {
                     return true;
+                }
+                BossOrNot = false;
             }
             else if (res === 2) {
                 HealGame(OriPlayer, _player);
@@ -66,7 +76,12 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             if (checkIfPlayerIsGone)
                 return;
         }
-        NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+        if (i % 10 !== 0) {
+            NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+        }
+        else {
+            NewEnemies = ReloadHpBoss(_boss, NewEnemies, OriBoss);
+        }
         Coins = (0, basic_game_customization_1.AddCoins)(Coins);
     }
 }

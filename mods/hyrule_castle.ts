@@ -33,6 +33,15 @@ function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any, OriEnemies: Stats) {
   }
 }
 
+function ReloadHpBoss(_boss: Stats, NewEnemies: any, OriBoss: Stats) {
+  if (_boss.hp <= 0) {
+    NewEnemies = true;
+    _boss.hp = OriBoss.hp;
+    console.log(`${_boss.name} died !`);
+    return NewEnemies;
+  }
+}
+
 function OptionInGame() {
   let res;
   console.log('-------------------- OPTION --------------------');
@@ -60,24 +69,29 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
 
   /* ================ Boucle de jeu ================== */
   for (let i = 1; i <= nbFight; i += 1) {
-    while (_enemies.hp > 1) {
+    while (_enemies.hp > 1 && _boss.hp > 1) {
       console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
       console.log(`valeur de NewEnmy ${NewEnemies}`);
-      if (NewEnemies) { DisplayFight(_enemies, _boss, BossOrNot); NewEnemies = false; }
+      if (NewEnemies) { DisplayFight(_enemies, _boss, i); NewEnemies = false; }
       BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
       if (res === 1) {
         const checkIfbossIsDie = AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i);
-        if (checkIfbossIsDie) return true;
+        if (checkIfbossIsDie && i === nbFight) {
+          return true;
+        }
+        BossOrNot = false;
       } else if (res === 2) {
         HealGame(OriPlayer, _player);
       }
       const checkIfPlayerIsGone = AttackByEnnemy(BossOrNot, _player, _enemies, _boss);
       if (checkIfPlayerIsGone) return;
     }
-    NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+    if (i % 10 !== 0) {
+      NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+    } else { NewEnemies = ReloadHpBoss(_boss, NewEnemies, OriBoss); }
     Coins = AddCoins(Coins);
   }
 }
