@@ -39,13 +39,12 @@ function InFight(_player, _enemies, _boss, Coins) {
     const OriPlayer = Object.assign({}, _player);
     const OriEnemies = Object.assign({}, _enemies);
     const OriBoss = Object.assign({}, _boss);
-    let nbFight = 1;
     let NewEnemies = true;
     let BossOrNot = false;
     /* ================ Boucle de jeu ================== */
     for (let i = 1; i <= 10; i += 1) {
         while (_enemies.hp > 1) {
-            console.log(`==================== FIGHT ${nbFight} ====================`);
+            console.log(`==================== FIGHT ${i} ====================`);
             console.log(`valeur de NewEnmy ${NewEnemies}`);
             if (NewEnemies) {
                 (0, fct_show_game_1.DisplayFight)(_enemies);
@@ -65,9 +64,9 @@ function InFight(_player, _enemies, _boss, Coins) {
             const checkIfPlayerIsGone = (0, fct_attack_game_1.AttackByEnnemy)(BossOrNot, _player, _enemies, _boss);
             if (checkIfPlayerIsGone)
                 return;
-            nbFight += 1;
         }
         NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+        Coins = (0, basic_game_customization_1.AddCoins)(Coins);
     }
 }
 function main() {

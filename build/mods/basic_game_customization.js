@@ -62,6 +62,7 @@ function Generate12Coins() {
 exports.Generate12Coins = Generate12Coins;
 function AddCoins(coins) {
     coins += 1;
+    console.log('\x1b[36m%s\x1b[0m', 'You have gained 1 coin !');
     return coins;
 }
 exports.AddCoins = AddCoins;

@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+/* eslint-disable max-len */
 /*
  DONE - The game starts on a title screen with the options
  “New Game” that starts a new game and “Quit” that exits the program
@@ -73,10 +75,11 @@ export function Generate12Coins() {
 
 export function AddCoins(coins: number) {
   coins += 1;
+  console.log('\x1b[36m%s\x1b[0m', 'You have gained 1 coin !');
   return coins;
 }
 
-export function DisplayBegin(_player: Stats, Coins) {
+export function DisplayBegin(_player: Stats, Coins: number) {
   const OriPlayer = _player;
   console.log('========================================');
   console.log('\x1b[32m%s\x1b[0m', `Your character is ${_player.name}.`);
