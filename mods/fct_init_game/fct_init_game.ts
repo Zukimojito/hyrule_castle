@@ -60,6 +60,7 @@ export function InitEnemies(_enemies: any) {
       };
     }
   });
+  // eslint-disable-next-line consistent-return
   return CopyEnemies;
 }
 export function InitBoss(_boss: any) {

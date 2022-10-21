@@ -65,6 +65,7 @@ function InitEnemies(_enemies) {
             };
         }
     });
+    // eslint-disable-next-line consistent-return
     return CopyEnemies;
 }
 exports.InitEnemies = InitEnemies;

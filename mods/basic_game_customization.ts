@@ -21,7 +21,7 @@ export function sleep(milliseconds: number) {
   } while (currentDate - date < milliseconds);
 }
 
-export const enum Difficulty {
+/* export const enum Difficulty {
   normal = 1,
   difficult = 2,
   insane = 3,
@@ -30,20 +30,21 @@ export const enum Difficulty {
 export const enum StartOrQuit {
   start = 1,
   quit = 2,
-}
+} */
+
 function ChooseStartOrQuit() {
-  let res;
+  let res: number;
   console.log('------Start the game or Quit the game :---------');
   console.log('-------------------- OPTION --------------------');
-  console.log('            1. Start      2. Quit              ');
+  console.log('            1. Start      0. Quit              ');
   do {
     res = Number(readline.question('Your choice : '));
-  } while (res !== StartOrQuit.start && res !== StartOrQuit.quit);
-  if (res === StartOrQuit.start) {
-    return StartOrQuit.start;
+  } while (res !== 1 && res !== 0);
+  if (res === 1) {
+    return 1;
   }
-  if (res === StartOrQuit.quit) {
-    return StartOrQuit.quit;
+  if (res === 0) {
+    return 0;
   }
 }
 // eslint-disable-next-line consistent-return
@@ -51,15 +52,15 @@ export function chooseYourDifficulty() {
   console.log('--------- Choose your difficulty :----------------');
   console.log('-------------------- OPTION --------------------');
   console.log('            1. Normal      2. Difficult      3. Insane         ');
-  let resDifficulty;
+  let resDifficulty: number;
   do {
     resDifficulty = Number(readline.question('Your choice : '));
   // eslint-disable-next-line max-len
-  } while (resDifficulty !== Difficulty.normal && resDifficulty !== Difficulty.difficult && resDifficulty !== Difficulty.insane);
+  } while (resDifficulty !== 1 && resDifficulty !== 2 && resDifficulty !== 3);
   switch (resDifficulty) {
-    case Difficulty.normal: return Difficulty.normal;
-    case Difficulty.difficult: return Difficulty.difficult;
-    case Difficulty.insane: return Difficulty.insane;
+    case 1: return 1;
+    case 2: return 2;
+    case 3: return 3;
     default:
   }
 }
@@ -67,13 +68,12 @@ export function chooseYourDifficulty() {
 // eslint-disable-next-line consistent-return
 export function initGameAndDifficulty() {
   const res = ChooseStartOrQuit();
-  if (res === StartOrQuit.start) {
+  if (res === 1) {
     return chooseYourDifficulty();
   }
-  if (res === StartOrQuit.quit) {
+  if (res === 0) {
     console.log('vous avez quitté le jeu');
-    sleep(1000);
-    return 'quit';
+    return 0;
   }
 }
 
@@ -88,4 +88,26 @@ export function DisplayBegin(_player: Stats) {
   console.log('========================================');
   readline.keyIn('Press Any Key to Start the game : ');
   console.log('\n');
+}
+
+export function ChangeStatByDifficulty(difficulty: any, _ennemy: Stats) {
+  console.log(`$test 1 voir obj enemy ${JSON.stringify(_ennemy)}`);
+  let coefMultiOfStat: number = 0;
+  switch (difficulty) {
+    case 1:
+      coefMultiOfStat = 1;
+      break;
+    case 2:
+      coefMultiOfStat = 3 / 2;
+      break;
+    case 3:
+      coefMultiOfStat = 2;
+      break;
+    default:
+  }
+  _ennemy.hp *= coefMultiOfStat;
+  _ennemy.str *= coefMultiOfStat;
+
+  // eslint-disable-next-line consistent-return
+  return _ennemy;
 }

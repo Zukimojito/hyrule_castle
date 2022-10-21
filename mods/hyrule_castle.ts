@@ -12,7 +12,7 @@ import {
   AttackByPlayer, AttackByEnnemy,
 } from './fct_attack_game/fct_attack_game';
 
-import { DisplayBegin, initGameAndDifficulty, StartOrQuit } from './basic_game_customization';
+import { DisplayBegin, initGameAndDifficulty, ChangeStatByDifficulty } from './basic_game_customization';
 
 import { Stats } from './interface_game/i_game';
 
@@ -84,11 +84,14 @@ function main() {
   const Player1: Stats = InitPlayer(player);
   // Begin
   const knowIfEndOrNotAndDifficulty = initGameAndDifficulty();
-  if (knowIfEndOrNotAndDifficulty === 'quit') return;
-
+  console.log(knowIfEndOrNotAndDifficulty);
+  if (knowIfEndOrNotAndDifficulty === 0) return;
   // Initialisation Enemies, Bosses
-  const Enemies1: Stats = InitEnemies(enemies);
-  const Boss1: Stats = InitBoss(bosses);
+  const Enemies1 = InitEnemies(enemies);
+  const Boss1 = InitBoss(bosses);
+
+  ChangeStatByDifficulty(knowIfEndOrNotAndDifficulty, Enemies1);
+  console.log(`test main si modif value ${JSON.stringify(Enemies1)}`);
   DisplayBegin(Player1);
   // In Fight
   InFight(Player1, Enemies1, Boss1);

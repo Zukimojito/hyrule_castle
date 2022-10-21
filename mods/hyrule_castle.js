@@ -86,11 +86,14 @@ function main() {
     var Player1 = (0, fct_init_game_1.InitPlayer)(player);
     // Begin
     var knowIfEndOrNotAndDifficulty = (0, basic_game_customization_1.initGameAndDifficulty)();
-    if (knowIfEndOrNotAndDifficulty === 'quit')
+    console.log(knowIfEndOrNotAndDifficulty);
+    if (knowIfEndOrNotAndDifficulty === 0)
         return;
     // Initialisation Enemies, Bosses
     var Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
     var Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
+    (0, basic_game_customization_1.ChangeStatByDifficulty)(knowIfEndOrNotAndDifficulty, Enemies1);
+    console.log("test main si modif value ".concat(JSON.stringify(Enemies1)));
     (0, basic_game_customization_1.DisplayBegin)(Player1);
     // In Fight
     InFight(Player1, Enemies1, Boss1);
