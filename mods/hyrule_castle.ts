@@ -78,6 +78,7 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number) {
       nbFight += 1;
     }
     NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+
   }
 }
 
@@ -94,6 +95,7 @@ function main() {
   let Coins = Generate12Coins();
   ChangeStatByDifficulty(knowIfEndOrNotAndDifficulty, Enemies1);
   console.log(`test main si modif value ${JSON.stringify(Enemies1)}`);
+  // display menu
   DisplayBegin(Player1, Coins);
   // In Fight
   InFight(Player1, Enemies1, Boss1, Coins);

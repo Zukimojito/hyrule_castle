@@ -44,7 +44,7 @@ export function chooseYourDifficulty() {
   let resDifficulty: number;
   do {
     resDifficulty = Number(readline.question('Your choice : '));
-  // eslint-disable-next-line max-len
+    // eslint-disable-next-line max-len
   } while (resDifficulty !== 1 && resDifficulty !== 2 && resDifficulty !== 3);
   switch (resDifficulty) {
     case 1: return 1;
