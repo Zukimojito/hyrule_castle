@@ -26,6 +26,7 @@ export function InitPlayer(_player: any) {
     name: '',
     hp: 0,
     str: 0,
+    int: 0,
     rarity: 0,
   };
   _player.forEach((el: Stats) => {
@@ -35,6 +36,7 @@ export function InitPlayer(_player: any) {
         name: el.name,
         hp: el.hp,
         str: el.str,
+        int: el.int,
         rarity: el.rarity,
       };
     }
@@ -47,6 +49,7 @@ export function InitEnemies(_enemies: any) {
     name: '',
     hp: 0,
     str: 0,
+    int: 0,
     rarity: 0,
   };
   _enemies.forEach((el: Stats) => {
@@ -56,6 +59,7 @@ export function InitEnemies(_enemies: any) {
         name: el.name,
         hp: el.hp,
         str: el.str,
+        int: el.int,
         rarity: el.rarity,
       };
     }
@@ -69,6 +73,7 @@ export function InitBoss(_boss: any) {
     name: '',
     hp: 0,
     str: 0,
+    int: 0,
     rarity: 0,
   };
   _boss.forEach((el: Stats) => {
@@ -78,6 +83,7 @@ export function InitBoss(_boss: any) {
         name: el.name,
         hp: el.hp,
         str: el.str,
+        int: el.int,
         rarity: el.rarity,
       };
     }

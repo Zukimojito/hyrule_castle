@@ -11,9 +11,10 @@ import { Stats } from './interface_game/i_game';
 
 const traps = require('./jsonObjectGame/traps.json');
 
-export function RandomRoom(_player: Stats, _coins: number) {
+export function RandomRoom(_player: Stats, _coins: number, OriPlayer: Stats) {
   let choice;
   let coin: number;
+  let HPLost: number;
   console.log('\x1b[35m%s\x1b[0m', '===== You have discovered a secret room ! =====');
   console.log('You wanna go inside the room or leave :        \n');
   console.log('       1. Enter     2. Leave');
@@ -25,13 +26,24 @@ export function RandomRoom(_player: Stats, _coins: number) {
     const random1 = Math.floor(Math.random() * 100) + 1;
     if (random1 >= 50) {
       console.log('You have enter in Trap Room');
-      if (_player.str >= 15) {
+      const random2 = Math.floor(Math.random() * 1) + 1;
+      if (random2 === traps[0].rarity) {
+        if (_player.str >= 10) {
+          coin = _coins + 1;
+          console.log(`You meet the requirements and gain 1 coin in trap room because you str is ${_player.str}`);
+          return coin;
+        }
+      } else if (_player.int >= 10) {
         coin = _coins + 1;
-        console.log('You have gain 1 coin in trap room');
+        console.log(`You meet the requirements and gain 1 coin in trap room because you int is ${_player.int}`);
         return coin;
       }
+
       console.log("You don't meets the requirements");
-      _player.hp -= 15;
+      // randomly loses between 5 % and 15 % of his maximum HP
+      HPLost = (OriPlayer.hp * (Math.floor(Math.random() * 10) + 5)) / 100;
+      console.log(`You lost ${HPLost} HP`);
+      _player.hp -= HPLost;
       return _coins;
     }
     console.log('You got lucky ! you enter in Treasure Room');
@@ -46,20 +58,17 @@ export function RandomRoom(_player: Stats, _coins: number) {
   }
 }
 
-export function KnowIfEnnemisOrBoss(i: number, _player: Stats, _coins: number) {
+export function KnowIfEnnemisOrBoss(i: number, _player: Stats, _coins: number, OriPlayer: Stats) {
   const roomOrNot = Math.floor(Math.random() * 100) + 1;
   console.log(roomOrNot);
   if (i % 10 !== 0) {
     console.log('cest un mob');
     if (roomOrNot <= 35) {
-      _coins = Number(RandomRoom(_player, _coins));
+      _coins = Number(RandomRoom(_player, _coins, OriPlayer));
       return _coins;
     } return _coins;
   }
   console.log('c un boss');
-  _coins = Number(RandomRoom(_player, _coins));
+  _coins = Number(RandomRoom(_player, _coins, OriPlayer));
   return _coins;
 }
-
-// const argent = KnowIfEnnemisOrBoss(9, 12);
-// console.log(argent);

@@ -57,7 +57,7 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
             console.log(`valeur de NewEnmy ${NewEnemies}`);
             if (NewEnemies) {
-                Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins);
+                Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins, OriPlayer);
                 (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }

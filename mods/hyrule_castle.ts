@@ -74,7 +74,7 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
     while (_enemies.hp > 1 && _boss.hp > 1) {
       console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
       console.log(`valeur de NewEnmy ${NewEnemies}`);
-      if (NewEnemies) { Coins = KnowIfEnnemisOrBoss(i, _player, Coins); DisplayFight(_enemies, _boss, i); NewEnemies = false; }
+      if (NewEnemies) { Coins = KnowIfEnnemisOrBoss(i, _player, Coins, OriPlayer); DisplayFight(_enemies, _boss, i); NewEnemies = false; }
       BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();

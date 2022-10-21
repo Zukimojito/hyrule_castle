@@ -3,5 +3,6 @@ export interface Stats {
   name: string;
   hp: number;
   str: number;
+  int: number;
   rarity: number;
 }
