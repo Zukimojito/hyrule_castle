@@ -22,10 +22,10 @@ import { Stats } from './interface_game/i_game';
 
 /* const readline = require('readline-sync'); */
 // Original
+const figlet = require('figlet');
 const player = require('./jsonObjectGame/players.json');
 const enemies = require('./jsonObjectGame/enemies.json');
 const bosses = require('./jsonObjectGame/bosses.json');
-const figlet = require('figlet');
 
 function clearTerminal() {
   return console.clear();
@@ -87,16 +87,17 @@ function HealGame(OriPlayer: Stats, _player: Stats) {
 }
 function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, nbFight: number) {
   const OriPlayer = { ..._player };
-/*   const OriEnemies = { ..._enemies };
-  const OriBoss = { ..._boss }; */
   let NewEnemies = true;
   let BossOrNot = false;
   /* ================ Boucle de jeu ================== */
   for (let i = 1; i <= nbFight; i += 1) {
+    const OriEnemies = { ..._enemies };
+    const OriBoss = { ..._boss };
+    Coins = KnowIfEnnemisOrBoss(i, _player, Coins, OriPlayer);
     while (_enemies.hp > 1 && _boss.hp > 1) {
       console.log(`================================ FIGHT ${i}/${nbFight} =================================`);
-      if (NewEnemies) { Coins = KnowIfEnnemisOrBoss(i, _player, Coins, OriPlayer); DisplayFight(_enemies, _boss, i); NewEnemies = false; }
-      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, BossOrNot);
+      if (NewEnemies) { DisplayFight(_enemies, _boss, i); NewEnemies = false; }
+      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, BossOrNot, OriEnemies, OriBoss);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
@@ -116,7 +117,7 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
       NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
     } else { NewEnemies = ReloadHpBoss(_boss, NewEnemies); }
     Coins = AddCoins(Coins);
-    clearTerminal();
+    // clearTerminal();
   }
 }
 

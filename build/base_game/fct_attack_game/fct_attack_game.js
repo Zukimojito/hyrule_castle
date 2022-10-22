@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AttackByEnnemy = exports.AttackByPlayer = void 0;
+const figlet = require('figlet');
 function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
     console.log('==================== INFOS ====================');
     console.log(`You attacked and dealt ${_player.str} damages !`);
@@ -12,7 +13,10 @@ function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
         console.log(`${_boss.name} attacked and deal ${_boss.str} damages !`);
         _boss.hp -= _player.str;
         if (_boss.hp <= 0) {
-            console.log(`${_boss.name} died ! Congratulation, the game is done.`);
+            console.log(figlet.textSync(`${_boss.name} died !\n Congratulation\n The game is done.`, {
+                horizontalLayout: 'full',
+                verticalLayout: 'full',
+            }));
             return true;
         }
     }

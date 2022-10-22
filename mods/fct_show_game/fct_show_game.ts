@@ -6,7 +6,7 @@ export const readline = require('readline-sync');
 
 export function ShowStatPlayer(_player: Stats, OriPlayer: Stats, Coins: number) {
   console.log('\x1b[32m%s\x1b[0m', `${_player.name} (player)`);
-  console.log(`\x1b[41mHP: ${_player.hp} / ${OriPlayer.hp}\x1b[0m`);
+  console.log(`\x1b[41mHP: ${(_player.hp).toFixed(0)} / ${OriPlayer.hp} \x1b[0m`);
   const visualHPPlayer = '▱'.repeat(_player.hp);
   console.log(visualHPPlayer);
   console.log(`Coins: ${Coins}`);

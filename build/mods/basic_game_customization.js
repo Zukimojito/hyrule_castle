@@ -130,14 +130,18 @@ function PlayerChoiceNbFight() {
     return valeur;
 }
 exports.PlayerChoiceNbFight = PlayerChoiceNbFight;
-function ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot) {
+function ShowStatAndEnnemy(i, _enemies, _player, _boss, BossOrNot, OriEnemies, Oriboss) {
+    const visualHpEnnemy = '□'.repeat(_enemies.hp);
+    const visualHpBoss = '▯'.repeat(_boss.hp);
     if (i % 10 !== 0) {
         console.log('\x1b[31m%s\x1b[0m', `${_enemies.name} (ennemies ${i})`);
         console.log(`HP: ${_enemies.hp} / ${OriEnemies.hp}`);
+        console.log(visualHpEnnemy);
     }
     else {
         console.log('\x1b[31m%s\x1b[0m', `${_boss.name} (Boss)`);
-        console.log(`HP: ${_boss.hp} / ${OriBoss.hp}`);
+        console.log(`HP: ${_boss.hp} / ${Oriboss.hp}`);
+        console.log(visualHpBoss);
         BossOrNot = true;
         return BossOrNot;
     }

@@ -28,9 +28,6 @@ export function RandomRoom(_player: Stats, _coins: number, OriPlayer: Stats) {
       console.log('You have enter in Trap Room');
       const random2 = Math.floor(Math.random() * 2) + 1;
       // fall on rarity 1
-      console.log('RARETE !!!!!!!!!!!!!!!');
-      console.log(random2);
-
       if (random2 === traps[0].rarity) {
         if (_player.str >= 10) {
           coin = _coins + 1;
