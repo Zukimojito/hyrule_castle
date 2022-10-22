@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AttackByEnnemy = exports.AttackByPlayer = void 0;
 function AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i) {
-    console.log('==================== INFOS ====================');
+    console.log('=================================== INFOS ===================================');
     console.log(`You attacked and dealt ${_player.str} damages !`);
     if (!BossOrNot) {
         console.log(`${_enemies.name} attacked and deal ${_enemies.str} damages !`);

@@ -55,8 +55,8 @@ function ReloadHpBoss(_boss: Stats, NewEnemies: any) {
 
 function OptionInGame() {
   let res;
-  console.log('-------------------- OPTION --------------------');
-  console.log('            1. Attack      2. Heal              ');
+  console.log('---------------------------------- OPTION -----------------------------------');
+  console.log('                    1. Attack               2. Heal                     ');
   do {
     res = Number(readline.question('Your choice : '));
   } while (res !== 1 && res !== 2);
@@ -76,15 +76,12 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
   const OriBoss = { ..._boss };
   let NewEnemies = true;
   let BossOrNot = false;
-  console.log(`NbFight : ---- ${nbFight}`);
-
   /* ================ Boucle de jeu ================== */
   for (let i = 1; i <= nbFight; i += 1) {
     while (_enemies.hp > 1 && _boss.hp > 1) {
-      console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
-      console.log(`valeur de NewEnmy ${NewEnemies}`);
+      console.log(`================================ FIGHT ${i}/${nbFight} =================================`);
       if (NewEnemies) { Coins = KnowIfEnnemisOrBoss(i, _player, Coins, OriPlayer); DisplayFight(_enemies, _boss, i); NewEnemies = false; }
-      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
+      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
@@ -113,7 +110,6 @@ function main() {
   const Player1: Stats = InitPlayer(player, Rdinit);
   // Begin
   const knowIfEndOrNotAndDifficulty = initGameAndDifficulty();
-  console.log(knowIfEndOrNotAndDifficulty);
   if (knowIfEndOrNotAndDifficulty === 0) return;
   // Initialisation Enemies, Bosses
   const Enemies1 = InitEnemies(enemies, Rdinit);
@@ -121,7 +117,6 @@ function main() {
   const nbFight = PlayerChoiceNbFight();
   const Coins = Generate12Coins();
   ChangeStatByDifficulty(knowIfEndOrNotAndDifficulty, Enemies1);
-  console.log(`test main si modif value ${JSON.stringify(Enemies1)}`);
   // display menu
   DisplayBegin(Player1, Coins);
   // In Fight
