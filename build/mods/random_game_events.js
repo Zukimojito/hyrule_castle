@@ -15,42 +15,59 @@ function RandomRoom(_player, _coins, OriPlayer) {
     let choice;
     let coin;
     let HPLost;
-    console.log('\x1b[35m%s\x1b[0m', '===== You have discovered a secret room ! =====');
-    console.log('You wanna go inside the room or leave :        \n');
-    console.log('       1. Enter     2. Leave');
+    console.log('\x1b[35m%s\x1b[0m', '==================== You have discovered a secret room ! ====================');
+    console.log('                   You wanna go inside the room or leave : \n');
+    console.log('                      1. Enter     2. Leave');
     do {
         choice = Number(basic_game_customization_1.readline.question('Your choice : '));
     } while (choice !== 1 && choice !== 2);
     if (choice === 1) {
         const random1 = Math.floor(Math.random() * 100) + 1;
-        if (random1 >= 50) {
+        if (random1 > 50) {
             console.log('You have enter in Trap Room');
-            const random2 = Math.floor(Math.random() * 1) + 1;
+            const random2 = Math.floor(Math.random() * 2) + 1;
+            // fall on rarity 1
+            console.log('RARETE !!!!!!!!!!!!!!!');
+            console.log(random2);
             if (random2 === traps[0].rarity) {
                 if (_player.str >= 10) {
                     coin = _coins + 1;
                     console.log(`You meet the requirements and gain 1 coin in trap room because you str is ${_player.str}`);
                     return coin;
                 }
+                if (_player.str < 10) {
+                    console.log("You don't meets the requirements");
+                    // randomly loses between 5 % and 15 % of his maximum HP
+                    HPLost = (OriPlayer.hp * (Math.floor(Math.random() * 10) + 5)) / 100;
+                    console.log(`You lost ${HPLost} HP`);
+                    _player.hp -= HPLost;
+                    return _coins;
+                }
             }
-            else if (_player.int >= 10) {
-                coin = _coins + 1;
-                console.log(`You meet the requirements and gain 1 coin in trap room because you int is ${_player.int}`);
-                return coin;
+            else if (random2 === traps[1].rarity) {
+                if (_player.int >= 10) {
+                    coin = _coins + 1;
+                    console.log(`You meet the requirements and gain 1 coin in trap room because you int is ${_player.int}`);
+                    return coin;
+                }
+                if (_player.int < 10) {
+                    console.log("You don't meets the requirements");
+                    // randomly loses between 5 % and 15 % of his maximum HP
+                    HPLost = (OriPlayer.hp * (Math.floor(Math.random() * 10) + 5)) / 100;
+                    console.log(`You lost ${HPLost} HP`);
+                    _player.hp -= HPLost;
+                    return _coins;
+                }
             }
-            console.log("You don't meets the requirements");
-            // randomly loses between 5 % and 15 % of his maximum HP
-            HPLost = (OriPlayer.hp * (Math.floor(Math.random() * 10) + 5)) / 100;
-            console.log(`You lost ${HPLost} HP`);
-            _player.hp -= HPLost;
+        }
+        if (random1 <= 50) {
+            console.log('You got lucky ! you enter in Treasure Room');
+            // earns between 3 and 5 coins.
+            coin = Math.floor(Math.random() * 2) + 3;
+            _coins += coin;
+            console.log('\x1b[36m%s\x1b[0m', `You gains ${coin} coins !`);
             return _coins;
         }
-        console.log('You got lucky ! you enter in Treasure Room');
-        // earns between 3 and 5 coins.
-        coin = Math.floor(Math.random() * 2) + 3;
-        _coins += coin;
-        console.log(`You gains ${coin} coins !`);
-        return _coins;
     }
     if (choice === 2) {
         console.log('You chose leave.\n');
@@ -60,16 +77,13 @@ function RandomRoom(_player, _coins, OriPlayer) {
 exports.RandomRoom = RandomRoom;
 function KnowIfEnnemisOrBoss(i, _player, _coins, OriPlayer) {
     const roomOrNot = Math.floor(Math.random() * 100) + 1;
-    console.log(roomOrNot);
     if (i % 10 !== 0) {
-        console.log('cest un mob');
         if (roomOrNot <= 35) {
             _coins = Number(RandomRoom(_player, _coins, OriPlayer));
             return _coins;
         }
         return _coins;
     }
-    console.log('c un boss');
     _coins = Number(RandomRoom(_player, _coins, OriPlayer));
     return _coins;
 }

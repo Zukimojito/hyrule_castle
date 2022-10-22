@@ -10,10 +10,10 @@ function ShowStatPlayer(_player, OriPlayer, Coins) {
 exports.ShowStatPlayer = ShowStatPlayer;
 function DisplayFight(_enemies, _boss, i) {
     if (i % 10 !== 0) {
-        console.log('\x1b[33m%s\x1b[0m', `You encounter a ${_enemies.name}`);
+        console.log('\x1b[33m%s\x1b[0m', `                        You encounter a ${_enemies.name}`);
     }
     else {
-        console.log('\x1b[33m%s\x1b[0m', `You Encounter a ${_boss.name}`);
+        console.log('\x1b[33m%s\x1b[0m', `                        You Encounter a ${_boss.name}`);
     }
 }
 exports.DisplayFight = DisplayFight;

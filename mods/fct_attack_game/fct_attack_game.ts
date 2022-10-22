@@ -2,7 +2,7 @@
 import { Stats } from '../interface_game/i_game';
 
 export function AttackByPlayer(_player: Stats, _enemies: Stats, _boss: Stats, BossOrNot: any, nbFight: number, i: number) {
-  console.log('==================== INFOS ====================');
+  console.log('=================================== INFOS ===================================');
   console.log(`You attacked and dealt ${_player.str} damages !`);
   if (!BossOrNot) {
     console.log(`${_enemies.name} attacked and deal ${_enemies.str} damages !`);

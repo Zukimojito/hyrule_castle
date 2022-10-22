@@ -12,26 +12,35 @@ const random_game_events_1 = require("./random_game_events");
 const player = require('./jsonObjectGame/players.json');
 const enemies = require('./jsonObjectGame/enemies.json');
 const bosses = require('./jsonObjectGame/bosses.json');
-function ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies) {
+function ReloadHpEnnemy(_enemies, NewEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;
-        _enemies.hp = OriEnemies.hp;
+        const randomNum = (0, fct_init_game_1.getRandomInt)();
+        const randomNewEnnemy = (0, fct_init_game_1.InitEnemies)(enemies, randomNum);
+        _enemies.hp = randomNewEnnemy.hp;
+        _enemies.name = randomNewEnnemy.name;
+        _enemies.str = randomNewEnnemy.str;
         console.log(`${_enemies.name} died !`);
+        _enemies = randomNewEnnemy;
         return NewEnemies;
     }
 }
-function ReloadHpBoss(_boss, NewEnemies, OriBoss) {
+function ReloadHpBoss(_boss, NewEnemies) {
     if (_boss.hp <= 0) {
         NewEnemies = true;
-        _boss.hp = OriBoss.hp;
+        const randomNumBoss = (0, fct_init_game_1.getRandomInt)();
+        const randomNewBoss = (0, fct_init_game_1.InitBoss)(enemies, randomNumBoss);
+        _boss.hp = randomNewBoss.hp;
+        _boss.name = randomNewBoss.name;
+        _boss.str = randomNewBoss.str;
         console.log(`${_boss.name} died !`);
         return NewEnemies;
     }
 }
 function OptionInGame() {
     let res;
-    console.log('-------------------- OPTION --------------------');
-    console.log('            1. Attack      2. Heal              ');
+    console.log('---------------------------------- OPTION -----------------------------------');
+    console.log('                    1. Attack               2. Heal                     ');
     do {
         res = Number(fct_show_game_1.readline.question('Your choice : '));
     } while (res !== 1 && res !== 2);
@@ -50,18 +59,16 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
     const OriBoss = Object.assign({}, _boss);
     let NewEnemies = true;
     let BossOrNot = false;
-    console.log(`NbFight : ---- ${nbFight}`);
     /* ================ Boucle de jeu ================== */
     for (let i = 1; i <= nbFight; i += 1) {
         while (_enemies.hp > 1 && _boss.hp > 1) {
-            console.log(`==================== FIGHT ${i}/${nbFight} ====================`);
-            console.log(`valeur de NewEnmy ${NewEnemies}`);
+            console.log(`================================ FIGHT ${i}/${nbFight} =================================`);
             if (NewEnemies) {
                 Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins, OriPlayer);
                 (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
-            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
+            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
             (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer, Coins);
             const res = OptionInGame();
             if (res === 1) {
@@ -79,29 +86,28 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
                 return;
         }
         if (i % 10 !== 0) {
-            NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies, OriEnemies);
+            NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
         }
         else {
-            NewEnemies = ReloadHpBoss(_boss, NewEnemies, OriBoss);
+            NewEnemies = ReloadHpBoss(_boss, NewEnemies);
         }
         Coins = (0, basic_game_customization_1.AddCoins)(Coins);
     }
 }
 function main() {
     // Initialisation Player
-    const Player1 = (0, fct_init_game_1.InitPlayer)(player);
+    const Rdinit = (0, fct_init_game_1.getRandomInt)();
+    const Player1 = (0, fct_init_game_1.InitPlayer)(player, Rdinit);
     // Begin
     const knowIfEndOrNotAndDifficulty = (0, basic_game_customization_1.initGameAndDifficulty)();
-    console.log(knowIfEndOrNotAndDifficulty);
     if (knowIfEndOrNotAndDifficulty === 0)
         return;
     // Initialisation Enemies, Bosses
-    const Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies);
-    const Boss1 = (0, fct_init_game_1.InitBoss)(bosses);
+    const Enemies1 = (0, fct_init_game_1.InitEnemies)(enemies, Rdinit);
+    const Boss1 = (0, fct_init_game_1.InitBoss)(bosses, Rdinit);
     const nbFight = (0, basic_game_customization_1.PlayerChoiceNbFight)();
     const Coins = (0, basic_game_customization_1.Generate12Coins)();
     (0, basic_game_customization_1.ChangeStatByDifficulty)(knowIfEndOrNotAndDifficulty, Enemies1);
-    console.log(`test main si modif value ${JSON.stringify(Enemies1)}`);
     // display menu
     (0, basic_game_customization_1.DisplayBegin)(Player1, Coins);
     // In Fight

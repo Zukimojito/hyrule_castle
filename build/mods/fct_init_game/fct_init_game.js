@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InitBoss = exports.InitEnemies = exports.InitPlayer = void 0;
+exports.InitBoss = exports.InitEnemies = exports.InitPlayer = exports.getRandomInt = void 0;
 function getRandomInt() {
     // Returns a random integer from 0 to 100:
     const random = Math.floor(Math.random() * 100) + 1;
@@ -23,8 +23,9 @@ function getRandomInt() {
     }
     return arrayPlayerEnemiesBoss;
 }
-const Rdinit = getRandomInt();
-function InitPlayer(_player) {
+exports.getRandomInt = getRandomInt;
+/* const Rdinit = getRandomInt(); */
+function InitPlayer(_player, Rdinit) {
     let CopyPlayer = {
         id: 0,
         name: '',
@@ -48,7 +49,7 @@ function InitPlayer(_player) {
     return CopyPlayer;
 }
 exports.InitPlayer = InitPlayer;
-function InitEnemies(_enemies) {
+function InitEnemies(_enemies, Rdinit) {
     let CopyEnemies = {
         id: 0,
         name: '',
@@ -73,7 +74,7 @@ function InitEnemies(_enemies) {
     return CopyEnemies;
 }
 exports.InitEnemies = InitEnemies;
-function InitBoss(_boss) {
+function InitBoss(_boss, Rdinit) {
     let CopyBoss = {
         id: 0,
         name: '',
