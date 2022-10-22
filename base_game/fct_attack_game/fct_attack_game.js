@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 exports.AttackByEnnemy = exports.AttackByPlayer = void 0;
+var figlet = require('figlet');
 function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
     console.log('==================== INFOS ====================');
     console.log("You attacked and dealt ".concat(_player.str, " damages !"));
@@ -12,7 +13,10 @@ function AttackByPlayer(_player, _enemies, _boss, BossOrNot) {
         console.log("".concat(_boss.name, " attacked and deal ").concat(_boss.str, " damages !"));
         _boss.hp -= _player.str;
         if (_boss.hp <= 0) {
-            console.log("".concat(_boss.name, " died ! Congratulation, the game is done."));
+            console.log(figlet.textSync("".concat(_boss.name, " died !\n Congratulation\n The game is done."), {
+                horizontalLayout: 'full',
+                verticalLayout: 'full'
+            }));
             return true;
         }
     }

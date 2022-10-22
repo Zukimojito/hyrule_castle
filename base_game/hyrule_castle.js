@@ -16,11 +16,15 @@ exports.__esModule = true;
 var fct_init_game_1 = require("./fct_init_game/fct_init_game");
 var fct_show_game_1 = require("./fct_show_game/fct_show_game");
 var fct_attack_game_1 = require("./fct_attack_game/fct_attack_game");
+var figlet = require('figlet');
 /* const readline = require('readline-sync'); */
 // Original
 var player = require('./jsonObjectGame/players.json');
 var enemies = require('./jsonObjectGame/enemies.json');
 var bosses = require('./jsonObjectGame/bosses.json');
+function clearTerminal() {
+    return console.clear();
+}
 function ReloadHpEnnemy(_enemies, NewEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;
@@ -36,15 +40,16 @@ function ReloadHpEnnemy(_enemies, NewEnemies) {
 }
 function OptionInGame() {
     var res;
-    console.log('-------------------- OPTION --------------------');
-    console.log('            1. Attack      2. Heal              ');
+    console.log(figlet.textSync('----  OPTION  ----', { whitespaceBreak: true }));
+    console.log(figlet.textSync(' 1. Attack  - OR -  2. Heal', { whitespaceBreak: true }));
     do {
-        res = Number(fct_show_game_1.readline.question('Your choice : '));
+        res = Number(fct_show_game_1.readline.question('Your choice : Type 1 Attack or 2 Heal ONLY ! '));
+        clearTerminal();
     } while (res !== 1 && res !== 2);
     return res;
 }
 function HealGame(OriPlayer, _player) {
-    console.log("You chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP"));
+    console.log("\u001B[33mYou chose heal ! You heal yourself ".concat(OriPlayer.hp / 2, " HP\u001B[0m"));
     _player.hp += (OriPlayer.hp / 2);
     if (_player.hp > OriPlayer.hp) {
         _player.hp = OriPlayer.hp;
@@ -54,16 +59,17 @@ function InFight(_player, _enemies, _boss) {
     var OriPlayer = __assign({}, _player);
     var OriEnemies = __assign({}, _enemies);
     var OriBoss = __assign({}, _boss);
-    var nbFight = 1;
     var NewEnemies = true;
     var BossOrNot = false;
     /* ================ Boucle de jeu ================== */
     for (var i = 1; i <= 10; i += 1) {
         while (_enemies.hp > 1) {
-            console.log("==================== FIGHT ".concat(nbFight, " ===================="));
-            console.log("valeur de NewEnmy ".concat(NewEnemies));
+            console.log(figlet.textSync("-- FIGHT ( ".concat(i, " / 10 ) --"), {
+            /* horizontalLayout: 'full', */
+            /* verticalLayout: 'full', */
+            }));
             if (NewEnemies) {
-                (0, fct_show_game_1.DisplayFight)(_enemies);
+                (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
             BossOrNot = (0, fct_show_game_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
@@ -80,12 +86,16 @@ function InFight(_player, _enemies, _boss) {
             var checkIfPlayerIsGone = (0, fct_attack_game_1.AttackByEnnemy)(BossOrNot, _player, _enemies, _boss);
             if (checkIfPlayerIsGone)
                 return;
-            nbFight += 1;
         }
         NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
+        clearTerminal();
     }
 }
 function main() {
+    console.log(figlet.textSync('WELCOME\n ---TO--- \nZELDA GAME', {
+        horizontalLayout: 'full',
+        verticalLayout: 'full'
+    }));
     var Rdinit = (0, fct_init_game_1.getRandomInt)();
     // Initialisation Player, Enemies, Bosses
     var Player1 = (0, fct_init_game_1.InitPlayer)(player, Rdinit);
