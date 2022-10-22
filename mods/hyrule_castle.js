@@ -1,6 +1,6 @@
 "use strict";
 var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function (t) {
+    __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
             s = arguments[i];
             for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
@@ -23,6 +23,10 @@ var random_game_events_1 = require("./random_game_events");
 var player = require('./jsonObjectGame/players.json');
 var enemies = require('./jsonObjectGame/enemies.json');
 var bosses = require('./jsonObjectGame/bosses.json');
+var figlet = require('figlet');
+function clearTerminal() {
+    return console.clear();
+}
 function ReloadHpEnnemy(_enemies, NewEnemies) {
     if (_enemies.hp <= 0) {
         NewEnemies = true;
@@ -40,7 +44,7 @@ function ReloadHpBoss(_boss, NewEnemies) {
     if (_boss.hp <= 0) {
         NewEnemies = true;
         var randomNumBoss = (0, fct_init_game_1.getRandomInt)();
-        var randomNewBoss = (0, fct_init_game_1.InitBoss)(enemies, randomNumBoss);
+        var randomNewBoss = (0, fct_init_game_1.InitBoss)(bosses, randomNumBoss);
         _boss.hp = randomNewBoss.hp;
         _boss.name = randomNewBoss.name;
         _boss.str = randomNewBoss.str;
@@ -48,12 +52,21 @@ function ReloadHpBoss(_boss, NewEnemies) {
         return NewEnemies;
     }
 }
+/* function ReloadHpBoss(_boss: Stats, NewEnemies: any, OriBoss: Stats) {
+  if (_boss.hp <= 0) {
+    NewEnemies = true;
+    _boss.hp = OriBoss.hp;
+    console.log(`${_boss.name} died !`);
+    return NewEnemies;
+  }
+} */
 function OptionInGame() {
     var res;
-    console.log('-------------------- OPTION --------------------');
-    console.log('            1. Attack      2. Heal              ');
+    console.log(figlet.textSync('----  OPTION  ----', { whitespaceBreak: true }));
+    console.log(figlet.textSync(' 1. Attack  - OR -  2. Heal', { whitespaceBreak: true }));
     do {
-        res = Number(fct_show_game_1.readline.question('Your choice : '));
+        res = Number(fct_show_game_1.readline.question('Your choice : 1 Attack / 2 Heal ONLY ! '));
+        clearTerminal();
     } while (res !== 1 && res !== 2);
     return res;
 }
@@ -66,21 +79,20 @@ function HealGame(OriPlayer, _player) {
 }
 function InFight(_player, _enemies, _boss, Coins, nbFight) {
     var OriPlayer = __assign({}, _player);
-    var OriEnemies = __assign({}, _enemies);
-    var OriBoss = __assign({}, _boss);
+    /*   const OriEnemies = { ..._enemies };
+      const OriBoss = { ..._boss }; */
     var NewEnemies = true;
     var BossOrNot = false;
     /* ================ Boucle de jeu ================== */
     for (var i = 1; i <= nbFight; i += 1) {
         while (_enemies.hp > 1 && _boss.hp > 1) {
-            console.log("==================== FIGHT ".concat(i, "/").concat(nbFight, " ===================="));
-            console.log("valeur de NewEnmy ".concat(NewEnemies));
+            console.log("================================ FIGHT ".concat(i, "/").concat(nbFight, " ================================="));
             if (NewEnemies) {
                 Coins = (0, random_game_events_1.KnowIfEnnemisOrBoss)(i, _player, Coins, OriPlayer);
                 (0, fct_show_game_1.DisplayFight)(_enemies, _boss, i);
                 NewEnemies = false;
             }
-            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot, nbFight);
+            BossOrNot = (0, basic_game_customization_1.ShowStatAndEnnemy)(i, _enemies, _player, _boss, BossOrNot);
             (0, fct_show_game_1.ShowStatPlayer)(_player, OriPlayer, Coins);
             var res = OptionInGame();
             if (res === 1) {
@@ -104,15 +116,19 @@ function InFight(_player, _enemies, _boss, Coins, nbFight) {
             NewEnemies = ReloadHpBoss(_boss, NewEnemies);
         }
         Coins = (0, basic_game_customization_1.AddCoins)(Coins);
+        clearTerminal();
     }
 }
 function main() {
     // Initialisation Player
+    console.log(figlet.textSync('WELCOME\n ---TO--- \nZELDA GAME', {
+        horizontalLayout: 'full',
+        verticalLayout: 'full'
+    }));
     var Rdinit = (0, fct_init_game_1.getRandomInt)();
     var Player1 = (0, fct_init_game_1.InitPlayer)(player, Rdinit);
     // Begin
     var knowIfEndOrNotAndDifficulty = (0, basic_game_customization_1.initGameAndDifficulty)();
-    console.log(knowIfEndOrNotAndDifficulty);
     if (knowIfEndOrNotAndDifficulty === 0)
         return;
     // Initialisation Enemies, Bosses
@@ -121,7 +137,6 @@ function main() {
     var nbFight = (0, basic_game_customization_1.PlayerChoiceNbFight)();
     var Coins = (0, basic_game_customization_1.Generate12Coins)();
     (0, basic_game_customization_1.ChangeStatByDifficulty)(knowIfEndOrNotAndDifficulty, Enemies1);
-    console.log("test main si modif value ".concat(JSON.stringify(Enemies1)));
     // display menu
     (0, basic_game_customization_1.DisplayBegin)(Player1, Coins);
     // In Fight

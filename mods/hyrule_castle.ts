@@ -25,6 +25,11 @@ import { Stats } from './interface_game/i_game';
 const player = require('./jsonObjectGame/players.json');
 const enemies = require('./jsonObjectGame/enemies.json');
 const bosses = require('./jsonObjectGame/bosses.json');
+const figlet = require('figlet');
+
+function clearTerminal() {
+  return console.clear();
+}
 
 function ReloadHpEnnemy(_enemies: Stats, NewEnemies: any) {
   if (_enemies.hp <= 0) {
@@ -44,7 +49,7 @@ function ReloadHpBoss(_boss: Stats, NewEnemies: any) {
   if (_boss.hp <= 0) {
     NewEnemies = true;
     const randomNumBoss = getRandomInt();
-    const randomNewBoss: Stats = InitBoss(enemies, randomNumBoss);
+    const randomNewBoss: Stats = InitBoss(bosses, randomNumBoss);
     _boss.hp = randomNewBoss.hp;
     _boss.name = randomNewBoss.name;
     _boss.str = randomNewBoss.str;
@@ -53,12 +58,22 @@ function ReloadHpBoss(_boss: Stats, NewEnemies: any) {
   }
 }
 
+/* function ReloadHpBoss(_boss: Stats, NewEnemies: any, OriBoss: Stats) {
+  if (_boss.hp <= 0) {
+    NewEnemies = true;
+    _boss.hp = OriBoss.hp;
+    console.log(`${_boss.name} died !`);
+    return NewEnemies;
+  }
+} */
+
 function OptionInGame() {
   let res;
-  console.log('---------------------------------- OPTION -----------------------------------');
-  console.log('                    1. Attack               2. Heal                     ');
+  console.log(figlet.textSync('----  OPTION  ----', { whitespaceBreak: true }));
+  console.log(figlet.textSync(' 1. Attack  - OR -  2. Heal', { whitespaceBreak: true }));
   do {
-    res = Number(readline.question('Your choice : '));
+    res = Number(readline.question('Your choice : 1 Attack / 2 Heal ONLY ! '));
+    clearTerminal();
   } while (res !== 1 && res !== 2);
   return res;
 }
@@ -72,8 +87,8 @@ function HealGame(OriPlayer: Stats, _player: Stats) {
 }
 function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, nbFight: number) {
   const OriPlayer = { ..._player };
-  const OriEnemies = { ..._enemies };
-  const OriBoss = { ..._boss };
+/*   const OriEnemies = { ..._enemies };
+  const OriBoss = { ..._boss }; */
   let NewEnemies = true;
   let BossOrNot = false;
   /* ================ Boucle de jeu ================== */
@@ -81,7 +96,7 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
     while (_enemies.hp > 1 && _boss.hp > 1) {
       console.log(`================================ FIGHT ${i}/${nbFight} =================================`);
       if (NewEnemies) { Coins = KnowIfEnnemisOrBoss(i, _player, Coins, OriPlayer); DisplayFight(_enemies, _boss, i); NewEnemies = false; }
-      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, OriEnemies, OriBoss, BossOrNot);
+      BossOrNot = ShowStatAndEnnemy(i, _enemies, _player, _boss, BossOrNot);
       ShowStatPlayer(_player, OriPlayer, Coins);
       const res = OptionInGame();
 
@@ -101,11 +116,16 @@ function InFight(_player: Stats, _enemies: Stats, _boss: Stats, Coins: number, n
       NewEnemies = ReloadHpEnnemy(_enemies, NewEnemies);
     } else { NewEnemies = ReloadHpBoss(_boss, NewEnemies); }
     Coins = AddCoins(Coins);
+    clearTerminal();
   }
 }
 
 function main() {
   // Initialisation Player
+  console.log(figlet.textSync('WELCOME\n ---TO--- \nZELDA GAME', {
+    horizontalLayout: 'full',
+    verticalLayout: 'full',
+  }));
   const Rdinit = getRandomInt();
   const Player1: Stats = InitPlayer(player, Rdinit);
   // Begin

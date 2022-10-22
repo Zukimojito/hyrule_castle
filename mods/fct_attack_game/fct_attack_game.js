@@ -1,8 +1,9 @@
 "use strict";
 exports.__esModule = true;
 exports.AttackByEnnemy = exports.AttackByPlayer = void 0;
+var figlet = require('figlet');
 function AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i) {
-    console.log('==================== INFOS ====================');
+    console.log('=================================== INFOS ===================================');
     console.log("You attacked and dealt ".concat(_player.str, " damages !"));
     if (!BossOrNot) {
         console.log("".concat(_enemies.name, " attacked and deal ").concat(_enemies.str, " damages !"));
@@ -12,7 +13,11 @@ function AttackByPlayer(_player, _enemies, _boss, BossOrNot, nbFight, i) {
         console.log("".concat(_boss.name, " attacked and deal ").concat(_boss.str, " damages !"));
         _boss.hp -= _player.str;
         if (_boss.hp <= 0) {
-            console.log("".concat(_boss.name, " died ! Congratulation, the game is done."));
+            console.log(figlet.textSync("".concat(_boss.name, " died !\n Congratulation\n The game is done."), {
+                horizontalLayout: 'full',
+                verticalLayout: 'full'
+            }));
+            return true;
             return true;
         }
     }
@@ -23,7 +28,10 @@ function AttackByEnnemy(BossOrNot, _player, _enemies, _boss) {
     if (!BossOrNot) {
         _player.hp -= _enemies.str;
         if (_player.hp <= 0) {
-            console.log("".concat(_player.name, " died !"));
+            console.log(figlet.textSync("".concat(_player.name, " died !\n Try Again !\n "), {
+                horizontalLayout: 'full',
+                verticalLayout: 'full'
+            }));
             return true;
         }
     }
@@ -36,3 +44,7 @@ function AttackByEnnemy(BossOrNot, _player, _enemies, _boss) {
     }
 }
 exports.AttackByEnnemy = AttackByEnnemy;
+/* console.log(figlet.textSync(`${_player.name} died !\n Try Again !\n `, {
+  horizontalLayout: 'full',
+  verticalLayout: 'full',
+})); */
